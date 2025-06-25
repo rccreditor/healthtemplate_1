@@ -79,7 +79,8 @@
         <div class="container">
             <h2>Our Health Services</h2>
             <p class="section-subtitle">Personalized health solutions for your unique needs</p>
-            <div class="services-grid">
+            <div class="services-grid-container">
+                <div class="services-grid" style="scroll-behavior: smooth;">
                 <div class="service-card">
                     <img class="service-thumbnail" src="https://img.freepik.com/premium-photo/attractive-female-nutritionist-showing-example-weekly-menu-online-consultations-via-laptop-right-nutrition-healthy-eating_35674-17661.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740" alt="Nutrition Planning">
                     <h3>Nutrition Planning</h3>
@@ -99,6 +100,16 @@
                     <img class="service-thumbnail" src="https://img.freepik.com/free-photo/sustainable-development-goals-still-life_23-2150196668.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740" alt="Plant-Based Transition">
                     <h3>Plant-Based Transition</h3>
                     <p>Guidance for transitioning to a plant-focused diet with proper nutrient balance.</p>
+                </div>
+                <div class="service-card">
+                    <img class="service-thumbnail" src="https://img.freepik.com/premium-photo/image-woman-with-glowing-shield-symbolizing-strong-immune-system-surrounded-by-viruses_416749-844.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740" alt="Nutrition Planning">
+                    <h3>🌾 Immunity Booster Kits</h3>
+                    <p>Curated organic bundles with:Herbal powders (ashwagandha, giloy),Superfoods (chia seeds, moringa, flaxseeds),Infused teas.</p>
+                </div>
+                 <div class="service-card">
+                    <img class="service-thumbnail" src="https://img.freepik.com/free-photo/low-angle-woman-holding-her-leg-up_23-2149433592.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740" alt="Detox Programs">
+                    <h3>Women’s Hormonal Balance Plan</h3>
+                    <p>Bring your body back into harmony — naturally.</p>
                 </div>
             </div>
         </div>
@@ -262,7 +273,7 @@
                     <span class="dot"></span>
                 </div>
                 <div class="testimonial-cta">
-                    <button class="btn journey-btn" onclick="openContactModal()">Start Your Journey</button>
+                    <button class="btn journey-btn" onclick="openContactModal()">Any doubts ?</button>
                 </div>
             </div>
         </div>
@@ -302,6 +313,25 @@
             </div>
         </div>
     </div>
+<!-- chatbot -->
+ <div class="chatbot-container">
+  <div class="chat-toggle" onclick="toggleChatbot()">
+    🌾
+  </div>
+  <div class="chat-box" id="chatBox">
+    <div class="chat-header">Ask WellnessBot 💚</div>
+    <div class="chat-body" id="chatBody">
+      <p><strong>Hi! How can I help you today?</strong></p>
+      <button onclick="handleQuestion('nutrition')">🥦 Nutrition Tips</button>
+      <button onclick="handleQuestion('detox')">🍋 Detox Program</button>
+      <button onclick="handleQuestion('exercise')">🏃 Exercise Routines</button>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type your question..." onkeypress="checkEnter(event)">
+      <button onclick="sendCustomMessage()">Send</button>
+    </div>
+  </div>
+</div>
 
     <!-- Footer -->
     <footer class="footer" id="footer">

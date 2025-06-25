@@ -44,6 +44,47 @@ function animateOnScroll() {
 window.addEventListener('scroll', animateOnScroll);
 animateOnScroll(); // Run once on page load
 
+// Services section infinite scroll
+function setupServicesScroll() {
+    const servicesGrid = document.querySelector('.services-grid');
+    if (!servicesGrid) return;
+
+    // Clone service cards for infinite scroll effect
+    const cards = servicesGrid.children;
+    const cardCount = cards.length;
+    
+    // Clone first set of cards and append to the end
+    for (let i = 0; i < cardCount; i++) {
+        const clone = cards[i].cloneNode(true);
+        servicesGrid.appendChild(clone);
+    }
+
+    // Set up scroll animation
+    const totalScroll = cardCount * 340; // card width + gap
+    let scrollPosition = 0;
+
+    function scrollServices() {
+        scrollPosition += 1;
+        if (scrollPosition >= totalScroll) {
+            scrollPosition = 0;
+        }
+        servicesGrid.scrollLeft = scrollPosition;
+        requestAnimationFrame(scrollServices);
+    }
+
+    // Start animation
+    requestAnimationFrame(scrollServices);
+
+    // Pause on hover or touch
+    servicesGrid.addEventListener('mouseenter', () => servicesGrid.style.scrollBehavior = 'auto');
+    servicesGrid.addEventListener('mouseleave', () => servicesGrid.style.scrollBehavior = 'smooth');
+    servicesGrid.addEventListener('touchstart', () => servicesGrid.style.scrollBehavior = 'auto');
+    servicesGrid.addEventListener('touchend', () => servicesGrid.style.scrollBehavior = 'smooth');
+}
+
+// Initialize services scroll on page load
+window.addEventListener('load', setupServicesScroll);
+
 // Counter animation
 function animateCounters() {
     const counters = document.querySelectorAll('.counter');
@@ -246,4 +287,63 @@ function launchLeafConfetti() {
     setTimeout(() => {
         confettiContainer.remove();
     }, 1800);
+}
+
+// chatbot
+function toggleChatbot() {
+  const chatBox = document.getElementById("chatBox");
+  chatBox.style.display = chatBox.style.display === "block" ? "none" : "block";
+}
+
+function handleQuestion(type) {
+  const chatBody = document.getElementById("chatBody");
+  let response = "";
+
+  if (type === "nutrition") {
+    response = "Eat whole foods, drink plenty of water, and avoid processed sugar!";
+  } else if (type === "detox") {
+    response = "Try a lemon-honey warm water detox every morning. Consult a doctor first!";
+  } else if (type === "exercise") {
+    response = "Start with 30 mins of daily walking or yoga to improve flexibility and strength.";
+  } else {
+    response = "Sorry, I didn't understand that.";
+  }
+
+  appendMessage("You", type);
+  appendMessage("Bot", response);
+}
+
+function sendCustomMessage() {
+  const input = document.getElementById("userInput");
+  const message = input.value.trim();
+  if (message === "") return;
+
+  appendMessage("You", message);
+
+  let response = "Hmm, I'm not sure about that. Try asking about nutrition, detox, or exercise.";
+
+  if (message.toLowerCase().includes("nutrition")) {
+    response = "A balanced diet is key! Include leafy greens, grains, and hydration.";
+  } else if (message.toLowerCase().includes("detox")) {
+    response = "For detox, try herbal teas and natural fruits. Avoid packaged foods.";
+  } else if (message.toLowerCase().includes("exercise")) {
+    response = "Try brisk walking, yoga, or short home workouts. Start small!";
+  }
+
+  appendMessage("Bot", response);
+  input.value = "";
+}
+
+function checkEnter(e) {
+  if (e.key === "Enter") {
+    sendCustomMessage();
+  }
+}
+
+function appendMessage(sender, text) {
+  const chatBody = document.getElementById("chatBody");
+  const p = document.createElement("p");
+  p.innerHTML = `<strong>${sender}:</strong> ${text}`;
+  chatBody.appendChild(p);
+  chatBody.scrollTop = chatBody.scrollHeight;
 }
