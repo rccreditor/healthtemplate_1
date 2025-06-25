@@ -2202,3 +2202,24 @@ img {
     opacity: 1;
   }
 }
+
+select#interest {
+    color: var(--dark-color);
+    background-color: white;
+  
+    /* Custom dropdown arrow using SVG */
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%234CAF50' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1.5rem center;
+    background-size: 20px 20px;
+  
+    padding-right: 3rem; /* space for arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1.5px solid var(--primary-color);
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: var(--transition);
+  }
+  
