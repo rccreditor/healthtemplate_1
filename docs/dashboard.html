@@ -254,42 +254,7 @@
       <button class="btn" onclick="closeModal()">Got it!</button>
     </div>
   </div>
-  <!-- Profile Settings Modal -->
-  <div id="profileModal" class="modal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeProfileModal()">&times;</span>
-      <div style="display:flex;flex-direction:column;align-items:center;">
-        <div style="margin-bottom:18px;display:flex;flex-direction:column;align-items:center;">
-          <img id="profilePicPreview" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Picture" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-color);margin-bottom:10px;">
-          <div id="predefinedAvatars" style="display:flex;gap:12px;margin:15px 0 20px 0;flex-wrap:wrap;justify-content:center;max-width:400px;"></div>
-          <div style="display:flex;gap:10px;">
-            <label for="profilePicInput" class="btn" style="padding:8px 18px;font-size:1rem;cursor:pointer;">Change Photo</label>
-            <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
-            <button class="btn btn-login" style="background:#fff;color:#d32f2f;border:1.5px solid #d32f2f;padding:8px 18px;font-size:1rem;" onclick="removeProfilePic()">Remove</button>
-          </div>
-        </div>
-        <div style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:16px;">
-          <div>
-            <label style="font-weight:600;color:var(--primary-color);">Username</label>
-            <input type="text" id="profileUsername" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--primary-light);font-size:1rem;">
-          </div>
-          <div>
-            <label style="font-weight:600;color:var(--primary-color);">Email</label>
-            <input type="email" id="profileEmail" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--primary-light);font-size:1rem;">
-          </div>
-          <div>
-            <label style="font-weight:600;color:var(--primary-color);">Phone</label>
-            <input type="tel" id="profilePhone" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--primary-light);font-size:1rem;">
-          </div>
-          <div>
-            <label style="font-weight:600;color:var(--primary-color);">Password</label>
-            <input type="password" id="profilePassword" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--primary-light);font-size:1rem;">
-          </div>
-          <button class="btn" style="width:100%;margin-top:10px;" onclick="saveProfile()">Save Changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
   <!-- Main site footer -->
   <footer class="footer">
     <div class="container">
@@ -422,112 +387,8 @@
       const cartCountElem = document.querySelector('.cart-count');
       if(cartCountElem) cartCountElem.textContent = cartCount;
     }
-    const predefinedAvatarsList = [
-      'https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-vector/young-prince-royal-attire_1308-176144.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-vector/woman-floral-traditional-costume_1308-176159.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-vector/woman-with-braided-hair-illustration_1308-174675.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-vector/smiling-woman-with-braided-hair_1308-175716.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/portrait-young-man-full-face_276162-177.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/portrait-smiling-man-with-beard-blue-circle_1139689-16030.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/portrait-man-cartoon-style_23-2151133862.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/portrait-man-cartoon-style_23-2151133876.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/lively-cartoon-figure-with-distinct-round-eyes-trendy-hairstyle-dressed-colorful-outfit-photo-customizable-cartoon-illustration_538213-146625.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/3d-cartoon-style-character_23-2151034122.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/young-man-cartoon-character-with-phone_23-2150964365.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/flat-style-vector-game-developer-character-illustration_1033579-65336.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/vector-man-illustration-man_1274338-50.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/portrait-man-christmas-celebrations_23-2150936475.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/actor-vector-character-illustration-flat-style_1033579-65302.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740'
-    ];
-    function renderPredefinedAvatars() {
-      const container = document.getElementById('predefinedAvatars');
-      container.innerHTML = '';
-      predefinedAvatarsList.forEach(url => {
-        const img = document.createElement('img');
-        img.src = url;
-        img.alt = 'Avatar';
-        img.style.width = '80px';
-        img.style.height = '80px';
-        img.style.borderRadius = '50%';
-        img.style.objectFit = 'cover';
-        img.style.border = '2px solid #ccc';
-        img.style.cursor = 'pointer';
-        img.style.transition = 'transform 0.2s, border-color 0.2s';
-        img.onmouseover = function() {
-          this.style.transform = 'scale(1.1)';
-          this.style.borderColor = 'var(--primary-color)';
-        };
-        img.onmouseout = function() {
-          this.style.transform = 'scale(1)';
-          this.style.borderColor = '#ccc';
-        };
-        img.onclick = function() {
-          document.getElementById('profilePicPreview').src = url;
-          // Update all borders to indicate selection
-          container.querySelectorAll('img').forEach(img => img.style.borderColor = '#ccc');
-          this.style.borderColor = 'var(--primary-color)';
-        };
-        container.appendChild(img);
-      });
-    }
-    document.getElementById('userAvatar').onclick = function() {
-      document.getElementById('profileModal').style.display = 'flex';
-      // Set current avatar and user info
-      document.getElementById('profilePicPreview').src = document.getElementById('avatarImg').src;
-      document.getElementById('profileUsername').value = document.getElementById('username').textContent;
-      document.getElementById('profileEmail').value = 'user@email.com'; // Demo value
-      document.getElementById('profilePhone').value = '+1234567890'; // Demo value
-      document.getElementById('profilePassword').value = '';
-      renderPredefinedAvatars();
-    };
-    document.getElementById('profilePicInput').onchange = function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          document.getElementById('profilePicPreview').src = evt.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    function removeProfilePic() {
-      document.getElementById('profilePicPreview').src = 'https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740';
-    }
-    function saveProfile() {
-      // Gather updated info
-      const name = document.getElementById('profileUsername').value;
-      const email = document.getElementById('profileEmail').value;
-      const phone = document.getElementById('profilePhone').value;
-      const password = document.getElementById('profilePassword').value;
-      const avatar = document.getElementById('profilePicPreview').src;
 
-      fetch('http://localhost:3000/api/auth/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, phone, password, avatar })
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.message === 'Profile updated successfully') {
-            document.getElementById('username').textContent = name;
-            document.getElementById('avatarImg').src = avatar;
-            closeProfileModal();
-            alert('Profile updated!');
-          } else {
-            alert(data.message || data.error || 'Update failed.');
-          }
-        })
-        .catch(err => {
-          alert('Error: ' + err.message);
-        });
-    }
-    function closeProfileModal() {
-      document.getElementById('profileModal').style.display = 'none';
-    }
-    function forgotPassword() {
-      alert('Password reset instructions have been sent to your email (demo).');
-    }
+    // Profile link is now handled directly through the HTML anchor tag
   </script>
 </body>
 </html>
