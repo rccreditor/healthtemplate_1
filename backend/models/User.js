@@ -16,9 +16,18 @@ const userSchema = new mongoose.Schema({
   },
   phone: String,       // ✅ Add this
   goal: String,        // ✅ And this
-  avatar: String       // ✅ And this
+  avatar: String,
+  isAdmin: { type: Boolean, default: false },       // ✅ And this
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
 
-module.exports = mongoose.model("User", userSchema);
+

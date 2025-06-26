@@ -40,11 +40,15 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
+    // ✅ Include isAdmin in the response
     res.status(200).json({
       message: "Login successful",
       user: {
         name: user.name,
-        email: user.email
+        email: user.email,
+        phone: user.phone,
+        avatar: user.avatar,
+        isAdmin: user.isAdmin
       }
     });
   } catch (err) {
