@@ -493,9 +493,18 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (res.ok) {
-      alert("Signup successful!");
-      window.location.href = "login.html"; // Redirect to login page
-    } else {
+  alert("Signup successful!");
+  localStorage.setItem("loggedInUser", JSON.stringify({
+    name: fullName,
+    email,
+    phone,
+    goal,
+    avatar: "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"
+  }));
+  window.location.href = "dashboard.html";
+}
+
+ else {
       alert(data.message || "Signup failed. Try again.");
     }
   } catch (err) {

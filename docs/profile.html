@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
       margin: 0;
       color: #222;
     }
+
     .header {
       background: linear-gradient(90deg, #4caf50 0%, #81c784 100%);
       color: #fff;
@@ -24,17 +26,19 @@
       font-weight: 800;
       letter-spacing: -1px;
     }
+
     .profile-container {
       max-width: 480px;
-      margin: 40px auto 0 auto;
+      margin: 40px auto;
       background: #fff;
       border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(76,175,80,0.08);
-      padding: 36px 28px 32px 28px;
+      box-shadow: 0 4px 24px rgba(76, 175, 80, 0.08);
+      padding: 36px 28px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
+
     .profile-avatar {
       width: 130px;
       height: 130px;
@@ -43,8 +47,9 @@
       border: 4px solid #4caf50;
       margin-bottom: 18px;
       background: #e8f5e9;
-      box-shadow: 0 2px 8px rgba(76,175,80,0.10);
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.10);
     }
+
     .avatar-options {
       display: flex;
       flex-wrap: wrap;
@@ -53,6 +58,7 @@
       margin-bottom: 18px;
       max-width: 400px;
     }
+
     .avatar-option {
       width: 64px;
       height: 64px;
@@ -62,23 +68,27 @@
       cursor: pointer;
       transition: transform 0.2s, border-color 0.2s;
     }
-    .avatar-option.selected, .avatar-option:hover {
+
+    .avatar-option.selected,
+    .avatar-option:hover {
       border-color: #4caf50;
       transform: scale(1.08);
     }
+
     .profile-form {
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 18px;
-      margin-top: 10px;
     }
+
     .profile-form label {
       font-weight: 600;
       color: #388e3c;
       margin-bottom: 4px;
       display: block;
     }
+
     .profile-form input {
       width: 100%;
       padding: 10px 12px;
@@ -89,16 +99,19 @@
       background: #f7faf7;
       transition: border-color 0.2s;
     }
+
     .profile-form input:focus {
       border-color: #4caf50;
       outline: none;
     }
+
     .profile-actions {
       display: flex;
       gap: 12px;
       margin-top: 10px;
       justify-content: center;
     }
+
     .btn {
       background: #4caf50;
       color: #fff;
@@ -110,32 +123,38 @@
       cursor: pointer;
       transition: background 0.2s;
     }
+
     .btn:hover {
       background: #388e3c;
     }
+
     .btn-remove {
       background: #fff;
       color: #d32f2f;
       border: 1.5px solid #d32f2f;
     }
+
     .btn-remove:hover {
       background: #fbe9e7;
     }
+
     @media (max-width: 600px) {
       .profile-container {
-        padding: 18px 4vw 18px 4vw;
+        padding: 18px 4vw;
       }
+
       .avatar-options {
         gap: 8px;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="header">Organic Wellness Hub</div>
   <div class="profile-container">
-    <img id="profileAvatar" class="profile-avatar" src="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740" alt="Profile Avatar">
-    <label for="avatarUpload" class="btn" style="margin-bottom:14px;margin-top:0;display:inline-block;">Upload Photo</label>
+    <img id="profileAvatar" class="profile-avatar" src="" alt="Profile Avatar">
+    <label for="avatarUpload" class="btn" style="margin-bottom:14px;">Upload Photo</label>
     <input type="file" id="avatarUpload" accept="image/*" style="display:none;">
     <div class="avatar-options" id="avatarOptions"></div>
     <form class="profile-form" id="profileForm" autocomplete="off" onsubmit="saveProfile(event)">
@@ -162,27 +181,15 @@
     </form>
   </div>
   <script>
-    // Avatar URLs
     const avatarList = [
-      'https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-vector/young-prince-royal-attire_1308-176144.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-vector/woman-floral-traditional-costume_1308-176159.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-vector/woman-with-braided-hair-illustration_1308-174675.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-vector/smiling-woman-with-braided-hair_1308-175716.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/portrait-young-man-full-face_276162-177.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/portrait-smiling-man-with-beard-blue-circle_1139689-16030.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/portrait-man-cartoon-style_23-2151133862.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/portrait-man-cartoon-style_23-2151133876.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/lively-cartoon-figure-with-distinct-round-eyes-trendy-hairstyle-dressed-colorful-outfit-photo-customizable-cartoon-illustration_538213-146625.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/3d-cartoon-style-character_23-2151034122.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/young-man-cartoon-character-with-phone_23-2150964365.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/flat-style-vector-game-developer-character-illustration_1033579-65336.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/vector-man-illustration-man_1274338-50.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/free-photo/portrait-man-christmas-celebrations_23-2150936475.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740',
-      'https://img.freepik.com/premium-vector/actor-vector-character-illustration-flat-style_1033579-65302.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740'
+      'https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg',
+      'https://img.freepik.com/free-vector/young-prince-royal-attire_1308-176144.jpg',
+      'https://img.freepik.com/free-vector/woman-floral-traditional-costume_1308-176159.jpg',
+      'https://img.freepik.com/free-vector/woman-with-braided-hair-illustration_1308-174675.jpg'
     ];
+
     let uploadedAvatarDataUrl = null;
-    // Render avatar options
+
     function renderAvatars(selectedUrl) {
       const container = document.getElementById('avatarOptions');
       container.innerHTML = '';
@@ -190,7 +197,7 @@
         const img = document.createElement('img');
         img.src = url;
         img.className = 'avatar-option' + (url === selectedUrl && !uploadedAvatarDataUrl ? ' selected' : '');
-        img.onclick = function() {
+        img.onclick = () => {
           uploadedAvatarDataUrl = null;
           document.getElementById('profileAvatar').src = url;
           renderAvatars(url);
@@ -198,20 +205,36 @@
         container.appendChild(img);
       });
     }
-    // Upload photo handler
-    document.getElementById('avatarUpload').onchange = function(e) {
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const userData = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (!userData || !userData.email) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      document.getElementById('profileName').value = userData.name || '';
+      document.getElementById('profileEmail').value = userData.email || '';
+      document.getElementById('profilePhone').value = userData.phone || '';
+
+      const avatarUrl = userData.avatar || avatarList[0];
+      document.getElementById('profileAvatar').src = avatarUrl;
+      renderAvatars(avatarUrl);
+    });
+
+    document.getElementById('avatarUpload').onchange = function (e) {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(evt) {
+        reader.onload = function (evt) {
           uploadedAvatarDataUrl = evt.target.result;
           document.getElementById('profileAvatar').src = uploadedAvatarDataUrl;
-          renderAvatars(''); // No avatar selected
+          renderAvatars('');
         };
         reader.readAsDataURL(file);
       }
     };
-    // Remove profile picture
+
     function removeProfilePic() {
       uploadedAvatarDataUrl = null;
       const defaultUrl = avatarList[0];
@@ -219,16 +242,28 @@
       document.getElementById('avatarUpload').value = '';
       renderAvatars(defaultUrl);
     }
-    // Save profile (demo only)
+
     function saveProfile(e) {
       e.preventDefault();
-      alert('Profile saved! (Demo only)');
+      const name = document.getElementById('profileName').value;
+      const email = document.getElementById('profileEmail').value;
+      const phone = document.getElementById('profilePhone').value;
+      const password = document.getElementById('profilePassword').value;
+      const avatar = uploadedAvatarDataUrl || document.getElementById('profileAvatar').src;
+
+      const user = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+      user.name = name;
+      user.email = email;
+      user.phone = phone;
+      if (password) user.password = password;
+      user.avatar = avatar;
+
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      localStorage.setItem(`user:${email}`, JSON.stringify(user));
+
+      alert('Profile updated successfully!');
     }
-    // Prefill demo data
-    document.getElementById('profileName').value = 'Alex';
-    document.getElementById('profileEmail').value = 'alex@email.com';
-    document.getElementById('profilePhone').value = '+1234567890';
-    renderAvatars(document.getElementById('profileAvatar').src);
   </script>
 </body>
-</html> 
+
+</html>

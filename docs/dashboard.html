@@ -168,7 +168,7 @@
           <li><a href="#" class="active">Dashboard</a></li>
           <li><a href="profile.html">Profile</a></li>
           <li><a href="payment.html">Payment</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
         <div class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
@@ -176,7 +176,7 @@
       </nav>
       <div class="auth-buttons" style="display:flex;align-items:center;gap:16px;">
         <a href="profile.html" class="user-avatar" id="userAvatar" style="width:60px;height:60px;border-radius:50%;overflow:hidden;cursor:pointer;border:2px solid var(--primary-color);background:#fff;display:flex;align-items:center;justify-content:center;">
-          <img id="avatarImg" src="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740" alt="User Avatar" style="width:100%;height:100%;object-fit:cover;">
+          <img id="dashboardAvatar" src="" alt="Avatar" class="avatar-display">
         </a>
         <a href="#" class="btn btn-login" onclick="logout()">Logout</a>
       </div>
@@ -213,6 +213,8 @@
         <a href="#" class="btn" onclick="showModal('tips')">Explore <i class="fas fa-chevron-right"></i></a>
       </div>
     </div>
+
+
     <div class="activity-section">
       <h3><i class="fas fa-bell"></i> Recent Activity</h3>
       <div class="activity-item">
@@ -318,32 +320,46 @@
   </footer>
   <script src="script.js"></script>
   <script>
-    // Enhanced user handling with sample data
-    document.addEventListener('DOMContentLoaded', function() {
-      // Check if user is logged in (simulated)
-      const loggedInUser = localStorage.getItem('loggedInUser');
-      if (!loggedInUser) {
-        // Redirect to login if not authenticated
-        window.location.href = 'login.html';
-      } else {
-        // Display user data
-        const user = JSON.parse(loggedInUser);
-        document.getElementById('username').textContent = user.name || 'User';
+    document.addEventListener('DOMContentLoaded', function () {
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  
+      if (!user) {
+        // Redirect to login if no user is logged in
+        window.location.href = "login.html";
+        return;
       }
-      updateCartCount();
+  
+      // Welcome name on dashboard
+      const usernameElem = document.getElementById("username");
+      if (usernameElem) usernameElem.textContent = user.name || "User";
+  
+      // Profile info section
+      const profileName = document.getElementById("profileName");
+      const profileEmail = document.getElementById("profileEmail");
+      const profilePhone = document.getElementById("profilePhone");
+      const profileGoal = document.getElementById("profileGoal");
+  
+      if (profileName) profileName.textContent = user.name;
+      if (profileEmail) profileEmail.textContent = user.email;
+      if (profilePhone) profilePhone.textContent = user.phone || "Not provided";
+      if (profileGoal) profileGoal.textContent = user.goal || "Not specified";
+  
+      updateCartCount(); // Optional cart count logic
     });
+  
     function logout() {
-      localStorage.removeItem('loggedInUser');
+      localStorage.removeItem("loggedInUser");
       window.location.href = "login.html";
     }
-    // Modal functions
+  
     function showModal(type) {
       event.preventDefault();
       const modal = document.getElementById('infoModal');
       const modalIcon = document.getElementById('modalIcon');
       const modalTitle = document.getElementById('modalTitle');
       const modalMessage = document.getElementById('modalMessage');
-      switch(type) {
+  
+      switch (type) {
         case 'plan':
           modalIcon.className = 'modal-icon fas fa-heartbeat';
           modalTitle.textContent = 'My Health Plan';
@@ -365,30 +381,70 @@
           modalMessage.innerHTML = 'New: <b>"5 Ways to Boost Your Energy"</b><br>Popular: <b>"Plant-Based Protein Guide"</b>';
           break;
       }
+  
       modal.style.display = 'flex';
     }
+  
     function closeModal() {
       document.getElementById('infoModal').style.display = 'none';
     }
-    // Close modal when clicking outside of it
-    window.onclick = function(event) {
+  
+    window.onclick = function (event) {
       const modal = document.getElementById('infoModal');
       if (event.target == modal) {
         closeModal();
       }
     }
-    // Function to handle going to payment page
+  
     function goToPayment() {
       window.location.href = "payment.html";
     }
-    // Optional: Function to update cart count
+  
     function updateCartCount() {
       const cartCount = localStorage.getItem('cartCount') || 0;
       const cartCountElem = document.querySelector('.cart-count');
-      if(cartCountElem) cartCountElem.textContent = cartCount;
+      if (cartCountElem) cartCountElem.textContent = cartCount;
     }
+    document.addEventListener("DOMContentLoaded", () => {
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
-    // Profile link is now handled directly through the HTML anchor tag
+  if (!user) {
+    window.location.href = "login.html"; // Redirect if not logged in
+    return;
+  }
+
+  // Set avatar and name
+  const avatarUrl = user.avatar || "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg";
+
+  const dashboardAvatar = document.getElementById("dashboardAvatar");
+  if (dashboardAvatar) dashboardAvatar.src = avatarUrl;
+
+  const username = document.getElementById("username");
+  if (username) username.textContent = user.name || "User";
+
+  // Prefill any editable profile fields if present
+  const nameInput = document.getElementById("name");
+  if (nameInput) nameInput.value = user.name || "";
+
+  const emailInput = document.getElementById("email");
+  if (emailInput) emailInput.value = user.email || "";
+
+  const phoneInput = document.getElementById("phone");
+  if (phoneInput) phoneInput.value = user.phone || "";
+
+  // Optional: Highlight selected avatar (if avatar options are present)
+  const avatarOptions = document.querySelectorAll(".avatar-option");
+  avatarOptions.forEach((avatar) => {
+    if (avatar.src === avatarUrl) {
+      avatar.classList.add("selected");
+    }
+  });
+
+  // Also set the header/profile image if you have another ID
+  const profileAvatar = document.getElementById("userAvatar");
+  if (profileAvatar) profileAvatar.src = avatarUrl;
+});
   </script>
+  
 </body>
 </html>
