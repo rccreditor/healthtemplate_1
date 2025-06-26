@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Organic Wellness Hub</title>
+    <!-- Main Site Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Re-declaring CSS variables from style.css for self-containment */
+        :root {
+            --primary-color: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary-color: #8BC34A;
+            --light-color: #F1F8E9;
+            --text-color: #2E7D32;
+            --white: #FFFFFF;
+            --gray: #f4f6f9;
+            --dark-gray: #343a40;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Dashboard-specific body styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--gray);
+            color: #495057;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Layout: Sidebar and Main Content --- */
+        .admin-sidebar {
+            width: 260px;
+            background-color: var(--dark-gray);
+            color: var(--white);
+            position: fixed;
+            height: 100%;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s;
+        }
+
+        .sidebar-header {
+            padding: 0 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+        
+        .sidebar-header span {
+            font-size: 0.9rem;
+            color: #adb5bd;
+        }
+        
+        .admin-nav ul {
+            list-style: none;
+        }
+
+        .admin-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: #adb5bd;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .admin-nav li a:hover, .admin-nav li a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-left: 4px solid var(--primary-color);
+            padding-left: 21px;
+        }
+
+        .admin-nav li a .fa-solid {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-container {
+            flex: 1;
+            margin-left: 260px;
+            transition: margin-left 0.3s;
+        }
+        
+        .admin-header {
+            background-color: var(--white);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .admin-user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .btn-logout {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .admin-main-content {
+            padding: 30px;
+        }
+        
+        h1, h2, h3 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        
+        /* --- Components: Cards, Charts, Tables --- */
+        .kpi-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .kpi-card {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .kpi-card .icon-box {
+            font-size: 1.8rem;
+            padding: 20px;
+            border-radius: 50%;
+            color: var(--white);
+        }
+        
+        .kpi-card h3 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            color: #343a40;
+        }
+
+        .kpi-card p {
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+             background-color: var(--white);
+             padding: 25px;
+             border-radius: 8px;
+             box-shadow: var(--shadow);
+             overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        
+        thead {
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        th, td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+        
+        .status-new { background-color: var(--secondary-color); }
+        .status-replied { background-color: var(--primary-color); }
+
+        .action-buttons button {
+            background: none;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            margin-right: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-buttons button:hover {
+            background: #e9ecef;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            .admin-sidebar {
+                width: 70px;
+            }
+            .sidebar-header h2, .admin-nav span {
+                display: none;
+            }
+            .sidebar-header span {
+                 display: block;
+                 font-size: 1.2rem;
+            }
+            .admin-container {
+                margin-left: 70px;
+            }
+        }
+        @media (max-width: 768px) {
+             .charts-grid {
+                grid-template-columns: 1fr;
+             }
+             .admin-sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                justify-content: space-around;
+                z-index: 100;
+             }
+             .sidebar-header, .admin-nav ul { display: none;}
+             .admin-container {
+                margin-left: 0;
+             }
+        }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="admin-sidebar">
+        <div class="sidebar-header">
+            <h2>OWH</h2>
+            <span>Admin</span>
+        </div>
+        <ul class="admin-nav">
+            <li><a href="#" class="active"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a></li>
+            <li><a href="#"><i class="fa-solid fa-users"></i> <span>Users</span></a></li>
+            <li><a href="#"><i class="fa-solid fa-envelope-open-text"></i> <span>Inquiries</span></a></li>
+            <li><a href="#"><i class="fa-solid fa-concierge-bell"></i> <span>Services</span></a></li>
+            <li><a href="#"><i class="fa-solid fa-leaf"></i> <span>Products</span></a></li>
+            <li><a href="#"><i class="fa-solid fa-gears"></i> <span>Settings</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div class="admin-container">
+        <!-- TOP HEADER BAR -->
+        <header class="admin-header">
+            <div class="admin-user-info">
+                <span>Welcome, <strong>Admin Name</strong></span>
+                <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Admin Avatar">
+                <a href="#" class="btn-logout" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></a>
+            </div>
+        </header>
+        
+        <!-- DYNAMIC CONTENT AREA -->
+        <main class="admin-main-content">
+            <h1>Dashboard Overview</h1>
+            
+            <!-- Key Performance Indicator (KPI) Cards -->
+            <section class="kpi-cards-grid">
+                <div class="kpi-card">
+                    <div class="icon-box" style="background-color: #17a2b8;">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div>
+                        <!-- BACKEND TARGET: Inject the count of new inquiries here -->
+                        <h3 id="kpi-new-inquiries">12</h3>
+                        <p>New Inquiries</p>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                     <div class="icon-box" style="background-color: #28a745;">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <!-- BACKEND TARGET: Inject the count of total users here -->
+                        <h3 id="kpi-total-users">5,123</h3>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                     <div class="icon-box" style="background-color: #ffc107;">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </div>
+                    <div>
+                         <!-- BACKEND TARGET: Inject monthly revenue here -->
+                        <h3 id="kpi-monthly-revenue">$4,820</h3>
+                        <p>Monthly Revenue</p>
+                    </div>
+                </div>
+                 <div class="kpi-card">
+                     <div class="icon-box" style="background-color: #dc3545;">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h3 id="kpi-site-visits">15,679</h3>
+                        <p>Site Visits (Month)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CHARTS SECTION -->
+            <section class="charts-grid">
+                <div class="card">
+                    <h3>User Registrations (Last 30 Days)</h3>
+                    <!-- BACKEND TARGET: Provide data for this chart via JavaScript -->
+                    <canvas id="userRegistrationsChart"></canvas>
+                </div>
+                <div class="card">
+                    <h3>Inquiry Types</h3>
+                     <!-- BACKEND TARGET: Provide data for this chart via JavaScript -->
+                    <canvas id="inquiryTypesChart"></canvas>
+                </div>
+            </section>
+            
+            <!-- RECENT INQUIRIES TABLE -->
+            <section class="card">
+                <h2>Recent Contact Inquiries</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Interest</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <!-- BACKEND TARGET: Inject table rows (<tr>) dynamically here. -->
+                    <tbody id="inquiry-table-body">
+                         <!-- Static example data - to be replaced by backend data. -->
+                        <tr>
+                            <td>2023-10-27</td>
+                            <td>Emily R.</td>
+                            <td>emily.r@example.com</td>
+                            <td>Nutrition Planning</td>
+                            <td><span class="status-badge status-new">New</span></td>
+                            <td class="action-buttons">
+                                <button title="View" data-id="101"><i class="fa-solid fa-eye"></i></button>
+                                <button title="Reply" data-id="101"><i class="fa-solid fa-reply"></i></button>
+                                <button title="Delete" data-id="101"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>2023-10-26</td>
+                            <td>James L.</td>
+                            <td>james.l@example.com</td>
+                            <td>Lifestyle Coaching</td>
+                             <td><span class="status-badge status-replied">Replied</span></td>
+                             <td class="action-buttons">
+                                <button title="View" data-id="102"><i class="fa-solid fa-eye"></i></button>
+                                <button title="Reply" data-id="102"><i class="fa-solid fa-reply"></i></button>
+                                <button title="Delete" data-id="102"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <!-- 
+                        *********************************************************
+                        *** BACKEND DEVELOPER TEMPLATE FOR TABLE ROWS ***
+                        *********************************************************
+                        Use the following structure to generate each table row.
+                        The 'data-id' attribute on the buttons should contain the unique ID of the inquiry record.
+
+                        <tr>
+                            <td>{inquiry_date}</td>
+                            <td>{user_name}</td>
+                            <td>{user_email}</td>
+                            <td>{inquiry_interest}</td>
+                            <td><span class="status-badge {status_class}">{status_text}</span></td>
+                            <td class="action-buttons">
+                                <button title="View" data-id="{inquiry_id}"><i class="fa-solid fa-eye"></i></button>
+                                <button title="Reply" data-id="{inquiry_id}"><i class="fa-solid fa-reply"></i></button>
+                                <button title="Delete" data-id="{inquiry_id}"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+
+                        *********************************************************
+                        -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // === CHART.JS SETUP ===
+        // This script block should be populated with data from your backend.
+
+        // --- 1. User Registrations Chart (Line Chart) ---
+        const userCtx = document.getElementById('userRegistrationsChart').getContext('2d');
+        const userRegistrationsChart = new Chart(userCtx, {
+            type: 'line',
+            data: {
+                // BACKEND TARGET: Replace with last 30 day labels. Example: ['Oct 1', 'Oct 2', ...]
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7'],
+                datasets: [{
+                    label: 'New Users',
+                    // BACKEND TARGET: Replace with new user counts for the corresponding labels.
+                    data: [12, 19, 8, 15, 22, 17, 25],
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                    borderColor: 'rgba(76, 175, 80, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // --- 2. Inquiry Types Chart (Doughnut Chart) ---
+        const inquiryCtx = document.getElementById('inquiryTypesChart').getContext('2d');
+        const inquiryTypesChart = new Chart(inquiryCtx, {
+            type: 'doughnut',
+            data: {
+                 // BACKEND TARGET: Replace with the actual names of services/interests.
+                labels: ['Nutrition', 'Detox', 'Coaching', 'Plant-Based', 'Other'],
+                datasets: [{
+                    label: 'Inquiry Types',
+                    // BACKEND TARGET: Replace with the counts for each corresponding label.
+                    data: [300, 50, 100, 80, 20],
+                    backgroundColor: [
+                        '#4CAF50',
+                        '#8BC34A',
+                        '#FFC107',
+                        '#17a2b8',
+                        '#6c757d'
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // === Example Event Listener for Action Buttons ===
+        // Your backend-focused JS will replace this with actual API calls.
+        document.getElementById('inquiry-table-body').addEventListener('click', function(event) {
+            const button = event.target.closest('button'); // Find the button that was clicked
+            if (!button) return;
+
+            const inquiryId = button.dataset.id; // Get the ID from the data-id attribute
+            
+            if(button.title === 'Delete') {
+                if (confirm(`Are you sure you want to delete inquiry #${inquiryId}?`)) {
+                    console.log(`Sending request to backend to DELETE inquiry ${inquiryId}`);
+                    // Example: fetch(`/api/inquiries/${inquiryId}`, { method: 'DELETE' });
+                }
+            } else {
+                 console.log(`Action: ${button.title}, ID: ${inquiryId}`);
+            }
+        });
+    </script>
+</body>
+</html>

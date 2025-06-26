@@ -1958,27 +1958,46 @@ img {
 }
 
 .chat-toggle {
-  background-color: #4CAF50;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  color: white;
-  font-size: 26px;
-  text-align: center;
-  line-height: 60px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
+    background-color: #4CAF50;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    color: white;
+    font-size: 26px;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  
+    /* Add this animation */
+    animation: breathing 3s ease-in-out infinite;
+  }
+  @keyframes breathing {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
+    }
+    50% {
+      transform: scale(1.07);
+      box-shadow: 0 0 15px 10px rgba(76, 175, 80, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
+    }
+  }
+    
 
 .chat-toggle:hover {
   transform: scale(1.1) rotate(5deg);
   box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  animation-play-state: paused;
 }
 
 .chat-toggle:active {
@@ -2222,4 +2241,6 @@ select#interest {
     font-size: 1rem;
     transition: var(--transition);
   }
-  
+  .social-links .fa-x-twitter {
+    font-weight: 600; /* Makes the X slightly bolder */
+}
