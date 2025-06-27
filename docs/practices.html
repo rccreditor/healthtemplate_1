@@ -1,18 +1,596 @@
---- START OF FILE practices.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Healthy Practices | Organic Wellness Hub</title>
+    <title>Wellness Blog | Organic Wellness Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-dark: #388E3C;
+            --primary-light: #C8E6C9;
+            --dark-color: #2E7D32;
+            --text-light: #666;
+            --bg-light: #f9f9f9;
+            --gradient-green: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+        }
+        
+        /* --- PROFESSIONAL ENHANCEMENTS & ANIMATIONS --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--dark-color);
+        }
+        
+        /* 1. Hero Section Enhancements */
+        .page-header {
+            position: relative;
+            height: 70vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+        
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: var(--bg-light);
+            clip-path: polygon(0 100%, 100% 100%, 100% 0);
+            z-index: 1;
+        }
+        
+        .page-header .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #f1f8e9;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.6s forwards;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        }
+        
+        /* Floating leaves decoration */
+        .floating-leaves {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .leaf {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.7;
+            animation: float 15s infinite linear;
+        }
+        
+        .leaf:nth-child(1) {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,0 C70,30 90,50 100,80 C80,90 60,100 30,90 C10,80 0,60 10,30 C20,10 40,0 50,0 Z" fill="%23C8E6C9"/></svg>');
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 20s;
+        }
+        
+        .leaf:nth-child(2) {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,0 C70,30 90,50 100,80 C80,90 60,100 30,90 C10,80 0,60 10,30 C20,10 40,0 50,0 Z" fill="%23A5D6A7"/></svg>');
+            width: 60px;
+            height: 60px;
+            top: 30%;
+            left: 80%;
+            animation-delay: 2s;
+            animation-duration: 18s;
+        }
+        
+        .leaf:nth-child(3) {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,0 C70,30 90,50 100,80 C80,90 60,100 30,90 C10,80 0,60 10,30 C20,10 40,0 50,0 Z" fill="%2381C784"/></svg>');
+            width: 100px;
+            height: 100px;
+            top: 70%;
+            left: 15%;
+            animation-delay: 4s;
+            animation-duration: 25s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) rotate(180deg);
+            }
+            100% {
+                transform: translateY(0) rotate(360deg);
+            }
+        }
+        
+        /* 2. Blog Grid & Card Enhancements */
+        .blog-feed-section {
+            padding: 100px 0; 
+            background-color: var(--bg-light);
+            position: relative;
+        }
+        
+        .blog-feed-section::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: var(--bg-light);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);
+            z-index: 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-green);
+            border-radius: 3px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 50px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .blog-grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 40px; 
+            margin-top: 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .blog-card {
+            background: white; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+        
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-green);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-15px) perspective(1000px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(46, 125, 50, 0.2);
+        }
+        
+        .blog-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .blog-card .card-image-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-image-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 30%);
+            z-index: 1;
+        }
+
+        .blog-card img {
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .blog-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .blog-card-content {
+            padding: 30px; 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+            background: white;
+        }
+
+        .blog-card-category {
+            color: var(--primary-color); 
+            font-weight: 700; 
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: var(--primary-light);
+            border-radius: 20px;
+        }
+        
+        .blog-card-title {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            font-size: 1.6rem;
+            line-height: 1.4;
+            transition: color 0.3s ease;
+        }
+        
+        .blog-card:hover .blog-card-title {
+            color: var(--primary-dark);
+        }
+        
+        .blog-card-excerpt {
+            color: var(--text-light); 
+            flex-grow: 1;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+        
+        .blog-card-readmore {
+            background: var(--gradient-green); 
+            color: white; 
+            padding: 12px 25px; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            text-align: center; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-start;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .blog-card-readmore::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .blog-card-readmore:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .blog-card-readmore:hover::before {
+            left: 100%;
+        }
+        
+        .blog-card-readmore i {
+            margin-left: 8px;
+            font-size: 0.9em;
+            transition: transform 0.3s ease;
+        }
+        
+        .blog-card-readmore:hover i {
+            transform: translateX(3px);
+        }
+        
+        /* 3. On-Scroll Animations */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+            transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                        transform 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Staggered animation delay */
+        .blog-card:nth-child(1) { transition-delay: 0.1s; }
+        .blog-card:nth-child(2) { transition-delay: 0.2s; }
+        .blog-card:nth-child(3) { transition-delay: 0.3s; }
+        .blog-card:nth-child(4) { transition-delay: 0.4s; }
+        .blog-card:nth-child(5) { transition-delay: 0.5s; }
+        .blog-card:nth-child(6) { transition-delay: 0.6s; }
+        
+        /* Featured Post Banner */
+        .featured-post {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+        
+        .featured-post.is-visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .featured-post-image {
+            height: 400px;
+            overflow: hidden;
+        }
+        
+        .featured-post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        
+        .featured-post:hover .featured-post-image img {
+            transform: scale(1.05);
+        }
+        
+        .featured-post-content {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .featured-post-category {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .featured-post-title {
+            font-size: 2.2rem;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .featured-post-excerpt {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+        
+        /* Newsletter Subscription */
+        .newsletter-section {
+            padding: 80px 0;
+            background: var(--gradient-green);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .newsletter-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M30,10 Q50,5 70,10 Q95,15 90,40 Q85,65 70,90 Q50,95 30,90 Q5,85 10,40 Q15,5 30,10 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .newsletter-container {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .newsletter-title {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter-description {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px 0 0 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .newsletter-button {
+            background: var(--dark-color);
+            color: white;
+            border: none;
+            padding: 0 30px;
+            border-radius: 0 50px 50px 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .newsletter-button:hover {
+            background: #1B5E20;
+        }
+        
+        /* Floating animation for visual interest */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating-element {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .featured-post {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-post-image {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-input {
+                border-radius: 50px;
+                margin-bottom: 10px;
+            }
+            
+            .newsletter-button {
+                border-radius: 50px;
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header with Navigation -->
+    <!-- Header with Navigation (Unchanged) -->
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -40,83 +618,133 @@
 
     <main>
         <!-- Page Header Section -->
-        <section class="page-header" style="background-image: url('https://images.unsplash.com/photo-1477332552946-cfb384aeaf1c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); padding: 180px 0 100px; text-align:center; color: white; background-size: cover; background-position: center;">
-            <div class="container" style="background: rgba(0,0,0,0.5); padding: 40px; border-radius: 15px;">
-                <h1>Healthy Living Practices</h1>
-                <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto; color: #f1f8e9;">Small, consistent habits that create a foundation for lifelong health and vitality.</p>
+        <section class="page-header" style="background-image: url('https://images.unsplash.com/photo-1477332552946-cfb384aeaf1c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); background-size: cover; background-position: center;">
+            <div class="floating-leaves">
+                <div class="leaf"></div>
+                <div class="leaf"></div>
+                <div class="leaf"></div>
+            </div>
+            <div class="container">
+                <h1 class="hero-title animate__animated animate__fadeInDown">The Wellness Journal</h1>
+                <p class="hero-subtitle animate__animated animate__fadeInUp">Insights, articles, and practical tips for a balanced and vibrant life.</p>
             </div>
         </section>
 
-        <!-- Healthy Practices Section -->
-        <section id="practices" class="practices" style="background: var(--light-color);">
+        <!-- Blog Feed Section -->
+        <section id="blog-feed" class="blog-feed-section">
             <div class="container">
-                <h2 style="color: var(--dark-color);">Integrate These Habits for Optimal Wellbeing</h2>
-                <p class="section-subtitle" style="color: var(--text-light);">True wellness is built day by day. Explore these foundational practices to transform your health from the inside out.</p>
+                <h2 class="section-title">Explore Our Latest Articles</h2>
+                <p class="section-subtitle">Dive into topics on nutrition, mindfulness, and healthy living to support your wellness journey.</p>
                 
-                <div class="practices-accordion" style="max-width: 900px; margin: 0 auto;">
-                    <div class="accordion-item" style="background: white;">
-                        <div class="accordion-header">
-                            <h3 style="color: var(--dark-color);">Mindful Eating</h3>
-                            <i class="fas fa-plus" style="color: var(--primary-color);"></i>
+                <div class="blog-grid">
+                    <!-- Featured Post -->
+                    <article class="featured-post fade-in-section">
+                        <div class="featured-post-image">
+                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80" alt="Healthy food arrangement">
                         </div>
-                        <div class="accordion-content">
-                            <p style="color: var(--text-light);">Practice eating slowly, without distractions, and listening to your body's hunger and fullness cues. This leads to better digestion, improved nutrient absorption, and a healthier relationship with food.
-                            <br><strong>Try this:</strong> Put your fork down between bites, chew each mouthful 20-30 times, and take a moment to savor the flavors and textures.</p>
+                        <div class="featured-post-content">
+                            <p class="featured-post-category">Featured Article</p>
+                            <h3 class="featured-post-title">Holistic Nutrition: Eating for Mind, Body and Soul</h3>
+                            <p class="featured-post-excerpt">Discover how to nourish every aspect of your being with our comprehensive guide to holistic nutrition. Learn about the connection between food, mood, and energy levels, and how to create meals that satisfy both your body and spirit.</p>
+                            <a href="#" class="blog-card-readmore">Read Featured Article <i class="fas fa-arrow-right"></i></a>
                         </div>
-                    </div>
+                    </article>
                     
-                    <div class="accordion-item" style="background: white;">
-                        <div class="accordion-header">
-                            <h3 style="color: var(--dark-color);">Daily Movement</h3>
-                             <i class="fas fa-plus" style="color: var(--primary-color);"></i>
+                    <!-- Blog Post 1: Mindful Eating -->
+                    <article class="blog-card fade-in-section">
+                        <div class="card-image-wrapper">
+                            <img src="foodbowel.jpg" alt="A healthy bowl of food">
                         </div>
-                        <div class="accordion-content">
-                            <p style="color: var(--text-light);">Incorporate at least 30 minutes of joyful movement into your day. This could be anything from a brisk walk in nature to dancing in your living room, yoga, or cycling. Movement improves circulation, boosts mood, strengthens bones, and enhances metabolism.
-                            <br><strong>Try this:</strong> Schedule a 15-minute walk after lunch and another after dinner to break up your activity.</p>
+                        <div class="blog-card-content">
+                            <p class="blog-card-category">Nutrition</p>
+                            <h3 class="blog-card-title">A Guide to Mindful Eating</h3>
+                            <p class="blog-card-excerpt">Practice eating slowly, without distractions, to improve digestion, absorption, and build a healthier relationship with food. Learn techniques to savor each bite and listen to your body's natural hunger cues.</p>
+                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
-                    </div>
+                    </article>
+
+                    <!-- Blog Post 2: Daily Movement -->
+                    <article class="blog-card fade-in-section">
+                        <div class="card-image-wrapper">
+                           <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1520&q=80" alt="Person doing yoga outdoors">
+                        </div>
+                        <div class="blog-card-content">
+                            <p class="blog-card-category">Fitness</p>
+                            <h3 class="blog-card-title">Finding Joy in Daily Movement</h3>
+                             <p class="blog-card-excerpt">Incorporate at least 30 minutes of joyful movement into your day. This could be anything from a brisk walk in nature to dancing. Discover how movement can be medicine for both body and mind.</p>
+                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 3: Hydration -->
+                     <article class="blog-card fade-in-section">
+                        <div class="card-image-wrapper">
+                            <img src="lemon.jpg" alt="Glass of water with lemon and mint">
+                        </div>
+                        <div class="blog-card-content">
+                            <p class="blog-card-category">Health Habits</p>
+                            <h3 class="blog-card-title">The Crucial Importance of Hydration</h3>
+                            <p class="blog-card-excerpt">Proper hydration is vital for energy, brain function, skin health, and your body's natural detoxification processes. Learn creative ways to stay hydrated and recognize the signs of dehydration.</p>
+                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
                     
-                    <div class="accordion-item" style="background: white;">
-                        <div class="accordion-header">
-                            <h3 style="color: var(--dark-color);">Prioritize Hydration</h3>
-                            <i class="fas fa-plus" style="color: var(--primary-color);"></i>
+                    <!-- Blog Post 4: Stress Reduction -->
+                    <article class="blog-card fade-in-section">
+                        <div class="card-image-wrapper">
+                            <img src="yoga.png" alt="Person meditating">
                         </div>
-                        <div class="accordion-content">
-                            <p style="color: var(--text-light);">Drink at least 8 glasses (around 2 liters) of pure water daily. Proper hydration is crucial for energy levels, brain function, skin health, and your body's natural detoxification processes.
-                            <br><strong>Try this:</strong> Start your day with a large glass of water with a squeeze of lemon. Keep a reusable water bottle with you at all times as a visual reminder.</p>
+                        <div class="blog-card-content">
+                           <p class="blog-card-category">Mindfulness</p>
+                            <h3 class="blog-card-title">Simple Techniques for Stress Reduction</h3>
+                           <p class="blog-card-excerpt">Dedicate a few minutes daily to a stress-reducing activity like meditation, deep breathing, or spending time in nature. Explore our 5-minute techniques that fit even the busiest schedules.</p>
+                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
-                    </div>
-                    
-                    <div class="accordion-item" style="background: white;">
-                        <div class="accordion-header">
-                            <h3 style="color: var(--dark-color);">Stress Reduction & Mindfulness</h3>
-                            <i class="fas fa-plus" style="color: var(--primary-color);"></i>
+                    </article>
+
+                    <!-- Blog Post 5: Digital Detox -->
+                    <article class="blog-card fade-in-section">
+                        <div class="card-image-wrapper">
+                            <img src="book.jpg" alt="Person reading a book instead of using a phone">
                         </div>
-                        <div class="accordion-content">
-                            <p style="color: var(--text-light);">Chronic stress negatively impacts nearly every system in your body. Dedicate a few minutes each day to a stress-reducing activity like meditation, deep breathing exercises, journaling, or spending time in nature.
-                            <br><strong>Try this:</strong> Set a timer for 5 minutes and practice the "4-7-8" breath: inhale for 4 seconds, hold for 7, and exhale for 8.</p>
+                        <div class="blog-card-content">
+                            <p class="blog-card-category">Lifestyle</p>
+                            <h3 class="blog-card-title">A Guide to a Restful Digital Detox</h3>
+                            <p class="blog-card-excerpt">Commit to turning off all screens at least 60 minutes before bed to improve your sleep quality and morning energy levels. Our step-by-step guide makes digital detox achievable.</p>
+                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
-                    </div>
+                    </article>
+
+                     <!-- Blog Post 6: Quality Sleep -->
+                    <article class="blog-card fade-in-section">
+                        <div class="card-image-wrapper">
+                            <img src="bed.jpg" alt="Comfortable and dark bedroom for sleeping">
+                        </div>
+                        <div class="blog-card-content">
+                           <p class="blog-card-category">Health Habits</p>
+                           <h3 class="blog-card-title">Unlocking the Power of Quality Sleep</h3>
+                           <p class="blog-card-excerpt">Quality sleep is the foundation of health. Discover simple, effective strategies to improve your sleep hygiene for better overall vitality, including our bedtime ritual checklist.</p>
+                           <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
-
-        <!-- Weekly Challenge Section -->
-        <section id="weekly-challenge" class="services" style="padding: 80px 0;">
-            <div class="container">
-                <h2>Join Our Weekly Wellness Challenge!</h2>
-                <p class="section-subtitle">A new, simple challenge each week to help you build healthy habits.</p>
-                <div class="service-card" style="max-width: 800px; margin: 0 auto; background: rgba(255, 255, 255, 0.15);">
-                    <i class="fas fa-calendar-check fa-3x" style="color: white; margin-bottom: 20px;"></i>
-                    <h3>This Week's Challenge: Digital Detox</h3>
-                    <p>Commit to turning off all screens (phone, TV, computer) at least 60 minutes before you go to sleep each night. Use this time to read a book, stretch, listen to calming music, or connect with a loved one. Notice how it impacts your sleep quality and morning energy levels!</p>
-                </div>
+        
+        <!-- Newsletter Section -->
+        <section class="newsletter-section">
+            <div class="newsletter-container">
+                <h3 class="newsletter-title floating-element">Join Our Wellness Community</h3>
+                <p class="newsletter-description">Subscribe to receive exclusive content, health tips, and special offers straight to your inbox.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                    <button type="submit" class="newsletter-button">Subscribe</button>
+                </form>
             </div>
         </section>
-
     </main>
 
-    <!-- chatbot -->
+    <!-- chatbot (Unchanged) -->
     <div class="chatbot-container">
         <div class="chat-toggle" onclick="toggleChatbot()">🌾</div>
         <div class="chat-box" id="chatBox">
@@ -134,7 +762,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer (Unchanged) -->
     <footer class="footer" id="footer">
         <div class="container">
             <div class="footer-content">
@@ -174,7 +802,6 @@
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="20" height="20" aria-label="X" style="vertical-align:middle;"><path d="M96.29 20H112L76.92 58.09L118.36 112H83.13L56.92 78.18L27.6 112H12.01L49.09 71.09L8.36 20H44.13L67.13 50.18L96.29 20ZM89.13 102H99.13L38.36 30H28.36L89.13 102Z" fill="currentColor"/></svg></a>
-
                         <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
@@ -198,6 +825,61 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+    // --- ON-SCROLL ANIMATION SCRIPT ---
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select all elements that should fade in
+        const fade_in_elements = document.querySelectorAll('.fade-in-section');
+        
+        // Configuration for the observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+        
+        // The callback function to execute when an intersection is detected
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+        
+        // Create the Intersection Observer
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        
+        // Attach the observer to each of the elements
+        fade_in_elements.forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Floating leaves animation
+        const leaves = document.querySelectorAll('.leaf');
+        leaves.forEach((leaf, index) => {
+            // Randomize initial position and animation
+            const randomX = Math.random() * 80 + 10;
+            const randomY = Math.random() * 80 + 10;
+            const randomDuration = Math.random() * 10 + 15;
+            const randomDelay = Math.random() * 5;
+            
+            leaf.style.left = `${randomX}%`;
+            leaf.style.top = `${randomY}%`;
+            leaf.style.animationDuration = `${randomDuration}s`;
+            leaf.style.animationDelay = `${randomDelay}s`;
+        });
+    });
+    
+    // Parallax effect for hero section
+    window.addEventListener('scroll', function() {
+        const scrollPosition = window.pageYOffset;
+        const heroSection = document.querySelector('.page-header');
+        if (heroSection) {
+            heroSection.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
+        }
+    });
+    </script>
 </body>
 </html>
---- END OF FILE practices.html ---
