@@ -3,412 +3,767 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Organic Wellness Hub</title>
-    <!-- Main Site Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Chart.js for data visualization -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-        /* --- VISUALLY ENHANCED STYLES --- */
-        :root {
-            --primary-color: #4CAF50;
-            --primary-dark: #388E3C;
-            --secondary-color: #8BC34A;
-            --text-light: #adb5bd;
-            --text-dark: #343a40;
-            --white: #FFFFFF;
-            --page-bg: #f8f9fa;
-            --sidebar-bg: #1e293b; /* Dark slate */
-            --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            --card-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease-in-out;
-        }
-
-        /* Basic Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--page-bg);
-            color: #495057;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* --- Sidebar & Layout --- */
-        .admin-sidebar {
-            width: 260px;
-            background-color: var(--sidebar-bg);
-            position: fixed;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: width 0.3s ease;
-            z-index: 100;
-        }
-        .sidebar-header {
-            padding: 25px 20px;
-            text-align: center;
-        }
-        .sidebar-header h2 {
-            font-weight: 800;
-            color: var(--white);
-            font-size: 1.8rem;
-        }
-        .sidebar-header span {
-            font-size: 0.8rem;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            transition: opacity 0.3s;
-        }
-        .admin-nav { margin-top: 20px; }
-        .admin-nav ul { list-style: none; }
-        .admin-nav li a {
-            display: flex;
-            align-items: center;
-            padding: 15px 25px;
-            color: var(--text-light);
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-        .admin-nav li a:hover, .admin-nav li a.active {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: var(--white);
-        }
-        .admin-nav li a.active {
-             border-left: 4px solid var(--primary-color);
-             padding-left: 21px;
-        }
-        .admin-nav li a .fa-solid {
-            margin-right: 15px;
-            width: 20px;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-        .admin-nav li a span { transition: opacity 0.3s; }
-        .admin-container {
-            flex: 1;
-            margin-left: 260px;
-            transition: margin-left 0.3s ease;
-        }
-        .admin-header {
-            background-color: var(--white);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            position: sticky; top: 0; z-index: 99;
-        }
-        .admin-user-info { display: flex; align-items: center; gap: 15px; }
-        .admin-user-info img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
-        }
-        .admin-user-info strong { color: var(--text-dark); }
-        .admin-main-content { padding: 40px; }
-        
-        /* --- General Typography --- */
-        h1 { color: var(--text-dark); font-weight: 800; font-size: 2rem; margin-bottom: 10px;}
-        .page-subtitle { color: #6c757d; font-size: 1.1rem; margin-bottom: 30px;}
-        h2 { font-size: 1.3rem; font-weight: 700; color: var(--text-dark); margin-bottom: 25px; }
-        h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-dark); margin-bottom: 20px; }
-        
-        /* --- Components --- */
-        .card {
-             background-color: var(--white);
-             padding: 30px;
-             border-radius: 12px;
-             box-shadow: var(--card-shadow);
-             overflow: hidden; /* Important for icon overflow */
-             position: relative;
-             transition: var(--transition);
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--card-shadow-hover);
-        }
-        .kpi-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        .kpi-card::before { /* Blurred icon background effect */
-            content: '';
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            font-size: 7rem;
-            color: currentColor;
-            opacity: 0.05;
-            transform: rotate(-15deg);
-            z-index: 1;
-            filter: blur(2px);
-        }
-        .kpi-card { display: flex; justify-content: space-between; align-items: flex-start;}
-        .kpi-card .icon-box {
-            font-size: 2.2rem;
-            padding: 20px;
-            border-radius: 18px;
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 70px; height: 70px;
-        }
-        .kpi-content { text-align: right; position: relative; z-index: 2; }
-        .kpi-content h3 { font-size: 2.5rem; margin-bottom: 2px; font-weight: 800; }
-        .kpi-content p { color: #6c757d; font-weight: 500; font-size: 1rem;}
-        
-        .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 40px; }
-        
-        .recent-inquiries .card { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        thead { border-bottom: 1px solid #dee2e6; }
-        th { padding: 15px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; }
-        td { padding: 15px; vertical-align: middle; }
-        tbody tr { border-bottom: 1px solid #f1f3f5; }
-        tbody tr:last-child { border-bottom: none; }
-        tbody tr:hover { background-color: #f8f9fa; }
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background-color: var(--page-bg);
-            color: var(--text-dark);
-        }
-        .status-new { background-color: #FFF3CD; color: #FF9F00; }
-        .status-replied { background-color: #D4EDDA; color: #155724; }
-        .action-buttons { display: flex; gap: 8px; }
-        .action-buttons button {
-            background: #f1f3f5;
-            border: none;
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition);
-            color: #6c757d;
-        }
-        .action-buttons button:hover { background: var(--primary-color); color: var(--white); transform: scale(1.1);}
-
-        /* Responsive Styles */
-        @media (max-width: 1200px) {
-            .charts-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 992px) {
-            .admin-sidebar { width: 80px; }
-            .sidebar-header span, .admin-nav span { display: none; }
-            .sidebar-header { padding-left: 0; padding-right: 0;}
-            .admin-nav li a { justify-content: center; }
-            .admin-nav li a .fa-solid { margin-right: 0; }
-            .admin-nav li a.active { padding-left: 0;}
-            .admin-container { margin-left: 80px; }
-        }
-        @media (max-width: 768px) {
-             .admin-sidebar {
-                position: fixed;
-                width: 100%;
-                height: 60px;
-                bottom: 0;
-                flex-direction: row;
-                justify-content: space-around;
-                padding: 0;
-             }
-             .sidebar-header { display: none; }
-             .admin-nav { width: 100%; margin: 0;}
-             .admin-nav ul { display: flex; justify-content: space-around; width: 100%;}
-             .admin-nav li a { border-left: none !important; border-bottom: 4px solid transparent; padding: 20px 10px; flex-direction: column; gap: 5px; font-size: 0.7rem; }
-             .admin-nav li a .fa-solid { margin: 0; }
-             .admin-nav li a span { display: block !important; opacity: 1 !important;}
-             .admin-nav li a.active { border-bottom-color: var(--primary-color);}
-             .admin-container { margin-left: 0; padding-bottom: 80px;} /* space for bottom nav */
-             .admin-header { justify-content: space-between; }
-             .page-title-section { flex-direction: column; align-items: flex-start;}
-             .kpi-cards-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 576px) {
-            .admin-header { flex-direction: column; gap: 10px; padding: 15px;}
-            .admin-main-content { padding: 20px; }
-        }
-    </style>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin_dashboard.css">
 </head>
 <body>
-    <nav class="admin-sidebar">
-        <div class="sidebar-header">
-            <h2>OWH</h2>
-            <span>Admin Panel</span>
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+          
+            <span>AdminHub</span>
         </div>
-        <ul class="admin-nav">
-            <li><a href="#" class="active"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a></li>
-            <li><a href="#"><i class="fa-solid fa-users"></i> <span>Users</span></a></li>
-            <li><a href="#"><i class="fa-solid fa-envelope-open-text"></i> <span>Inquiries</span></a></li>
-            <li><a href="#"><i class="fa-solid fa-leaf"></i> <span>Products</span></a></li>
-            <li><a href="#"><i class="fa-solid fa-gears"></i> <span>Settings</span></a></li>
-        </ul>
-    </nav>
-
-    <div class="admin-container">
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#users"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="#products"><i class="fas fa-box-open"></i> Products</a></li>
+                <li><a href="#blogs"><i class="fas fa-blog"></i> Blogs</a></li>
+                <li><a href="#inquiries"><i class="fas fa-envelope"></i> Inquiries</a></li>
+                <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="system-status">
+                <div class="status-indicator active"></div>
+                <span>System Operational</span>
+            </div>
+        </div>
+    </aside>
+    
+    <div class="admin-content">
         <header class="admin-header">
+            <div class="header-left">
+                <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+                <h1>Dashboard</h1>
+            </div>
             <div class="admin-user-info">
-                <span>Welcome, <strong>Admin</strong></span>
-                <img src="https://i.pravatar.cc/150?img=12" alt="Admin Avatar">
-                <a href="#" class="action-buttons" title="Logout"><button><i class="fa-solid fa-right-from-bracket"></i></button></a>
+                <div class="notifications">
+                    <button class="notification-btn"><i class="fas fa-bell"></i><span class="badge">5</span></button>
+                </div>
+                <div class="user-dropdown">
+                    <img src="https://i.pravatar.cc/150?img=12" alt="Admin Avatar">
+                    <span>Admin User</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="dropdown-menu">
+                        <a href="#profile"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
             </div>
         </header>
         
         <main class="admin-main-content">
             <section class="page-title-section">
-                <h1>Dashboard</h1>
-                <p class="page-subtitle">A quick overview of your hub's performance.</p>
+                <h2>Dashboard Overview</h2>
+                <p class="page-subtitle">Welcome back! Here's what's happening with your business today.</p>
             </section>
             
             <section class="kpi-cards-grid">
-                <div class="kpi-card" style="color: #17a2b8;">
-                    <div style="background: linear-gradient(135deg, #17a2b8, #138496);" class="icon-box"><i class="fa-solid fa-envelope"></i></div>
-                    <div class="kpi-content"><h3 id="kpi-new-inquiries">0</h3><p>New Inquiries</p></div>
+                <div class="kpi-card" style="--card-color: #17a2b8;">
+                    <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="kpi-content">
+                        <h3 id="kpi-new-inquiries">0</h3>
+                        <p>New Inquiries</p>
+                        <div class="trend up"><i class="fas fa-arrow-up"></i> 12% from yesterday</div>
+                    </div>
                 </div>
-                <div class="kpi-card" style="color: #28a745;">
-                    <div style="background: linear-gradient(135deg, #28a745, #218838);" class="icon-box"><i class="fa-solid fa-users"></i></div>
-                    <div class="kpi-content"><h3 id="kpi-total-users">0</h3><p>Total Users</p></div>
+                <div class="kpi-card" style="--card-color: #28a745;">
+                    <div class="icon-box"><i class="fa-solid fa-users"></i></div>
+                    <div class="kpi-content">
+                        <h3 id="kpi-total-users">0</h3>
+                        <p>Total Users</p>
+                        <div class="trend up"><i class="fas fa-arrow-up"></i> 5% from last week</div>
+                    </div>
                 </div>
-                <div class="kpi-card" style="color: #ffc107;">
-                    <div style="background: linear-gradient(135deg, #ffc107, #e0a800);" class="icon-box"><i class="fa-solid fa-dollar-sign"></i></div>
-                    <div class="kpi-content"><h3 id="kpi-monthly-revenue">$0</h3><p>Revenue (Month)</p></div>
+                <div class="kpi-card" style="--card-color: #ffc107;">
+                    <div class="icon-box"><i class="fa-solid fa-dollar-sign"></i></div>
+                    <div class="kpi-content">
+                        <h3 id="kpi-monthly-revenue">$0</h3>
+                        <p>Revenue (Month)</p>
+                        <div class="trend down"><i class="fas fa-arrow-down"></i> 3% from last month</div>
+                    </div>
                 </div>
-                 <div class="kpi-card" style="color: #dc3545;">
-                    <div style="background: linear-gradient(135deg, #dc3545, #c82333);" class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
-                    <div class="kpi-content"><h3 id="kpi-site-visits">0</h3><p>Site Visits</p></div>
+                <div class="kpi-card" style="--card-color: #dc3545;">
+                    <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="kpi-content">
+                        <h3 id="kpi-site-visits">0</h3>
+                        <p>Site Visits</p>
+                        <div class="trend up"><i class="fas fa-arrow-up"></i> 22% from last week</div>
+                    </div>
                 </div>
             </section>
 
             <section class="charts-grid">
                 <div class="card">
-                    <h3>User Registrations (Last 7 Weeks)</h3>
-                    <canvas id="userRegistrationsChart"></canvas>
+                    <div class="card-header">
+                        <h3>User Registrations (Last 7 Weeks)</h3>
+                        <div class="card-actions">
+                            <button class="btn-sm">Export</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="userRegistrationsChart"></canvas>
+                    </div>
                 </div>
                 <div class="card">
-                    <h3>Inquiry Breakdown</h3>
-                    <canvas id="inquiryTypesChart"></canvas>
+                    <div class="card-header">
+                        <h3>Inquiry Breakdown</h3>
+                        <div class="card-actions">
+                            <select class="form-select-sm">
+                                <option>Last 7 days</option>
+                                <option>Last 30 days</option>
+                                <option selected>Last 90 days</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="inquiryTypesChart"></canvas>
+                    </div>
                 </div>
             </section>
             
-            <section class="recent-inquiries card">
-                <h2>Recent Inquiries</h2>
-                <table>
-                    <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Interest</th><th>Status</th><th>Actions</th></tr></thead>
-                    <tbody id="inquiry-table-body">
-                         <!-- Dynamically populated by JS -->
-                         <tr><td colspan="6" style="text-align: center; padding: 40px;">Loading data...</td></tr>
-                    </tbody>
-                </table>
+            <div class="content-grid">
+                <section class="card recent-inquiries">
+                    <div class="card-header">
+                        <h3>Recent Inquiries</h3>
+                        <div class="card-actions">
+                            <button class="btn-sm">View All</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Interest</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inquiry-table-body">
+                                    <tr><td colspan="6" style="text-align: center; padding: 40px;">Loading data...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card quick-actions">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="action-grid">
+                            <button class="action-btn" id="add-product-btn">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Add Product</span>
+                            </button>
+                            <button class="action-btn" id="write-blog-btn">
+                                <i class="fas fa-edit"></i>
+                                <span>Write Blog</span>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-bullhorn"></i>
+                                <span>Send Newsletter</span>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-chart-pie"></i>
+                                <span>Generate Report</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Products Section -->
+            <section class="card products-section" id="products-section" style="display: none;">
+                <div class="card-header">
+                    <h3>Product Management</h3>
+                    <div class="card-actions">
+                        <button class="btn-sm" id="back-to-dashboard">Back to Dashboard</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="product-actions">
+                        <button class="btn-primary" id="show-add-product-form">
+                            <i class="fas fa-plus"></i> Add New Product
+                        </button>
+                        <div class="search-box">
+                            <input type="text" placeholder="Search products...">
+                            <button><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="add-product-form" id="add-product-form" style="display: none;">
+                        <h4>Add New Product</h4>
+                        <form id="product-form">
+                            <div class="form-group">
+                                <label for="product-name">Product Name</label>
+                                <input type="text" id="product-name" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="product-price">Price</label>
+                                    <input type="number" id="product-price" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="product-category">Category</label>
+                                    <select id="product-category" required>
+                                        <option value="">Select category</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="clothing">Clothing</option>
+                                        <option value="home">Home & Garden</option>
+                                        <option value="books">Books</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-description">Description</label>
+                                <textarea id="product-description" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-image">Product Image</label>
+                                <input type="file" id="product-image">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="cancel-add-product">Cancel</button>
+                                <button type="submit" class="btn-primary">Save Product</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="products-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <!-- Filled with random data by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Blog Section -->
+            <section class="card blog-section" id="blog-section" style="display: none;">
+                <div class="card-header">
+                    <h3>Blog Management</h3>
+                    <div class="card-actions">
+                        <button class="btn-sm" id="back-to-dashboard-blog">Back to Dashboard</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="blog-actions">
+                        <button class="btn-primary" id="show-add-blog-form">
+                            <i class="fas fa-plus"></i> Create New Blog Post
+                        </button>
+                        <div class="search-box">
+                            <input type="text" placeholder="Search blogs...">
+                            <button><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="add-blog-form" id="add-blog-form" style="display: none;">
+                        <h4>Create New Blog Post</h4>
+                        <form id="blog-form">
+                            <div class="form-group">
+                                <label for="blog-title">Title</label>
+                                <input type="text" id="blog-title" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="blog-category">Category</label>
+                                    <select id="blog-category" required>
+                                        <option value="">Select category</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="business">Business</option>
+                                        <option value="health">Health & Wellness</option>
+                                        <option value="lifestyle">Lifestyle</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="blog-tags">Tags</label>
+                                    <input type="text" id="blog-tags" placeholder="Comma separated tags">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="blog-content">Content</label>
+                                <div id="blog-content" class="blog-editor" contenteditable="true"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="blog-image">Featured Image</label>
+                                <input type="file" id="blog-image">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="cancel-add-blog">Cancel</button>
+                                <button type="submit" class="btn-primary">Publish Post</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="blogs-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Author</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="blogs-table-body">
+                                <!-- Filled with random data by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
+</div>
 
-    <script>
-        // JS functionality is unchanged but some Chart options are tweaked for style
-        let userRegistrationsChart;
-        let inquiryTypesChart;
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Chart instances
+let userRegistrationsChart;
+let inquiryTypesChart;
+
+// DOM elements
+const sidebar = document.querySelector('.admin-sidebar');
+const sidebarToggle = document.querySelector('.sidebar-toggle');
+const adminContent = document.querySelector('.admin-content');
+const productsSection = document.getElementById('products-section');
+const blogSection = document.getElementById('blog-section');
+const addProductBtn = document.getElementById('add-product-btn');
+const writeBlogBtn = document.getElementById('write-blog-btn');
+const showAddProductForm = document.getElementById('show-add-product-form');
+const showAddBlogForm = document.getElementById('show-add-blog-form');
+const cancelAddProduct = document.getElementById('cancel-add-product');
+const cancelAddBlog = document.getElementById('cancel-add-blog');
+const backToDashboard = document.getElementById('back-to-dashboard');
+const backToDashboardBlog = document.getElementById('back-to-dashboard-blog');
+const productForm = document.getElementById('product-form');
+const blogForm = document.getElementById('blog-form');
+
+// Random data generation functions
+function generateRandomUsersPerWeek() {
+    const weeks = [];
+    for (let i = 1; i <= 7; i++) {
+        weeks.push({
+            week: i,
+            count: Math.floor(Math.random() * 100) + 20
+        });
+    }
+    return weeks;
+}
+
+function generateRandomInquiryTypes() {
+    const types = ['General', 'Support', 'Sales', 'Technical'];
+    return types.map(type => ({
+        type,
+        count: Math.floor(Math.random() * 50) + 10
+    }));
+}
+
+function generateRandomInquiries(count = 10) {
+    const statuses = ['Pending', 'Completed', 'Processing'];
+    const interests = ['Product Info', 'Pricing', 'Support', 'Partnership', 'Other'];
+    const inquiries = [];
     
-        async function fetchAdminStats() {
-            try {
-                // In a real app, this URL would point to your production API
-                const response = await fetch("https://run.mocky.io/v3/46e49971-89e4-4a47-a722-1d12c823b4bc");
-                const data = await response.json();
+    for (let i = 0; i < count; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - Math.floor(Math.random() * 30));
+        
+        inquiries.push({
+            _id: 'inq_' + Math.random().toString(36).substr(2, 9),
+            name: ['John', 'Jane', 'Robert', 'Emily', 'Michael', 'Sarah'][Math.floor(Math.random() * 6)],
+            email: `user${i}@example.com`,
+            interest: interests[Math.floor(Math.random() * interests.length)],
+            status: statuses[Math.floor(Math.random() * statuses.length)],
+            createdAt: date.toISOString()
+        });
+    }
     
-                document.getElementById("kpi-total-users").textContent = data.totalUsers.toLocaleString();
-                document.getElementById("kpi-monthly-revenue").textContent = "₹" + data.monthlyRevenue.toLocaleString();
-                document.getElementById("kpi-site-visits").textContent = data.siteVisits.toLocaleString();
-                document.getElementById("kpi-new-inquiries").textContent = data.newInquiries.toLocaleString();
+    return inquiries;
+}
+
+function generateRandomProducts(count = 15) {
+    const categories = ['Electronics', 'Clothing', 'Home', 'Books'];
+    const statuses = ['In Stock', 'Low Stock', 'Out of Stock'];
+    const products = [];
     
-                const tbody = document.getElementById("inquiry-table-body");
-                if (data.recentInquiries.length > 0) {
-                    tbody.innerHTML = data.recentInquiries.map(i => `
-                        <tr>
-                            <td>${new Date(i.createdAt).toLocaleDateString()}</td>
-                            <td>${i.name}</td>
-                            <td>${i.email}</td>
-                            <td>${i.interest}</td>
-                            <td><span class="status-badge status-${i.status.toLowerCase()}">${i.status}</span></td>
-                            <td class="action-buttons">
-                                <button title="View" data-id="${i._id}"><i class="fa-solid fa-eye"></i></button>
-                                <button title="Reply" data-id="${i._id}"><i class="fa-solid fa-reply"></i></button>
-                                <button title="Delete" data-id="${i._id}"><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `).join("");
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px;">No recent inquiries found.</td></tr>`;
+    for (let i = 0; i < count; i++) {
+        products.push({
+            id: 'prod_' + Math.random().toString(36).substr(2, 9),
+            name: `Product ${i + 1}`,
+            category: categories[Math.floor(Math.random() * categories.length)],
+            price: (Math.random() * 100 + 10).toFixed(2),
+            stock: Math.floor(Math.random() * 100),
+            status: statuses[Math.floor(Math.random() * statuses.length)]
+        });
+    }
+    
+    return products;
+}
+
+function generateRandomBlogs(count = 10) {
+    const categories = ['Technology', 'Business', 'Health', 'Lifestyle'];
+    const statuses = ['Published', 'Draft', 'Pending Review'];
+    const authors = ['Admin User', 'Content Team', 'Guest Writer'];
+    const blogs = [];
+    
+    for (let i = 0; i < count; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - Math.floor(Math.random() * 60));
+        
+        blogs.push({
+            id: 'blog_' + Math.random().toString(36).substr(2, 9),
+            title: `Blog Post About ${['AI', 'Marketing', 'Wellness', 'Trends'][Math.floor(Math.random() * 4)]}`,
+            category: categories[Math.floor(Math.random() * categories.length)],
+            author: authors[Math.floor(Math.random() * authors.length)],
+            date: date.toLocaleDateString(),
+            status: statuses[Math.floor(Math.random() * statuses.length)]
+        });
+    }
+    
+    return blogs;
+}
+
+// Initialize dashboard
+async function initDashboard() {
+    // Generate random data
+    const dashboardData = {
+        totalUsers: Math.floor(Math.random() * 5000) + 1000,
+        monthlyRevenue: Math.floor(Math.random() * 50000) + 10000,
+        siteVisits: Math.floor(Math.random() * 100000) + 50000,
+        newInquiries: Math.floor(Math.random() * 50) + 10,
+        usersPerWeek: generateRandomUsersPerWeek(),
+        inquiryTypes: generateRandomInquiryTypes(),
+        recentInquiries: generateRandomInquiries(),
+        products: generateRandomProducts(),
+        blogs: generateRandomBlogs()
+    };
+    
+    // Update KPI cards
+    document.getElementById("kpi-total-users").textContent = dashboardData.totalUsers.toLocaleString();
+    document.getElementById("kpi-monthly-revenue").textContent = "$" + dashboardData.monthlyRevenue.toLocaleString();
+    document.getElementById("kpi-site-visits").textContent = dashboardData.siteVisits.toLocaleString();
+    document.getElementById("kpi-new-inquiries").textContent = dashboardData.newInquiries.toLocaleString();
+    
+    // Populate recent inquiries table
+    const tbody = document.getElementById("inquiry-table-body");
+    if (dashboardData.recentInquiries.length > 0) {
+        tbody.innerHTML = dashboardData.recentInquiries.map(i => `
+            <tr>
+                <td>${new Date(i.createdAt).toLocaleDateString()}</td>
+                <td>${i.name}</td>
+                <td>${i.email}</td>
+                <td>${i.interest}</td>
+                <td><span class="status-badge status-${i.status.toLowerCase()}">${i.status}</span></td>
+                <td class="action-buttons">
+                    <button title="View" data-id="${i._id}"><i class="fa-solid fa-eye"></i></button>
+                    <button title="Reply" data-id="${i._id}"><i class="fa-solid fa-reply"></i></button>
+                    <button title="Delete" data-id="${i._id}"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        `).join("");
+    } else {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px;">No recent inquiries found.</td></tr>`;
+    }
+    
+    // Populate products table
+    const productsTbody = document.getElementById("products-table-body");
+    productsTbody.innerHTML = dashboardData.products.map(p => `
+        <tr>
+            <td>${p.id.substr(0, 8)}</td>
+            <td>${p.name}</td>
+            <td>${p.category}</td>
+            <td>$${p.price}</td>
+            <td>${p.stock}</td>
+            <td><span class="status-badge status-${p.status.toLowerCase().replace(' ', '-')}">${p.status}</span></td>
+            <td class="action-buttons">
+                <button title="Edit" data-id="${p.id}"><i class="fa-solid fa-pen"></i></button>
+                <button title="Delete" data-id="${p.id}"><i class="fa-solid fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join("");
+    
+    // Populate blogs table
+    const blogsTbody = document.getElementById("blogs-table-body");
+    blogsTbody.innerHTML = dashboardData.blogs.map(b => `
+        <tr>
+            <td>${b.id.substr(0, 8)}</td>
+            <td>${b.title}</td>
+            <td>${b.category}</td>
+            <td>${b.author}</td>
+            <td>${b.date}</td>
+            <td><span class="status-badge status-${b.status.toLowerCase().replace(' ', '-')}">${b.status}</span></td>
+            <td class="action-buttons">
+                <button title="Edit" data-id="${b.id}"><i class="fa-solid fa-pen"></i></button>
+                <button title="Delete" data-id="${b.id}"><i class="fa-solid fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join("");
+    
+    // Initialize charts
+    initCharts(dashboardData);
+}
+
+function initCharts(data) {
+    // Destroy previous chart instances to prevent duplicates
+    if (userRegistrationsChart) userRegistrationsChart.destroy();
+    if (inquiryTypesChart) inquiryTypesChart.destroy();
+    
+    // User registrations chart
+    const userCtx = document.getElementById('userRegistrationsChart').getContext('2d');
+    userRegistrationsChart = new Chart(userCtx, {
+        type: 'line',
+        data: {
+            labels: data.usersPerWeek.map(u => "Week " + u.week),
+            datasets: [{
+                label: 'New Users',
+                data: data.usersPerWeek.map(u => u.count),
+                backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                borderColor: 'rgba(67, 97, 238, 1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: 'rgba(67, 97, 238, 1)',
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleFont: { size: 14 },
+                    bodyFont: { size: 12 },
+                    padding: 12,
+                    usePointStyle: true
                 }
-
-                // Destroy previous chart instances to prevent duplicates
-                if (userRegistrationsChart) userRegistrationsChart.destroy();
-                if (inquiryTypesChart) inquiryTypesChart.destroy();
-    
-                const userCtx = document.getElementById('userRegistrationsChart').getContext('2d');
-                userRegistrationsChart = new Chart(userCtx, {
-                    type: 'line', data: {
-                        labels: data.usersPerWeek.map(u => "Week " + u.week),
-                        datasets: [{
-                            label: 'New Users', data: data.usersPerWeek.map(u => u.count),
-                            backgroundColor: 'rgba(76, 175, 80, 0.1)', borderColor: 'rgba(76, 175, 80, 1)',
-                            borderWidth: 3, fill: true, tension: 0.4, pointBackgroundColor: 'rgba(76, 175, 80, 1)'
-                        }]
-                    }, options: { responsive: true, scales: { y: { beginAtZero: true } } }
-                });
-    
-                const inquiryCtx = document.getElementById('inquiryTypesChart').getContext('2d');
-                inquiryTypesChart = new Chart(inquiryCtx, {
-                    type: 'doughnut', data: {
-                        labels: data.inquiryTypes.map(i => i.type),
-                        datasets: [{
-                            label: 'Inquiries', data: data.inquiryTypes.map(i => i.count),
-                            backgroundColor: ['#4CAF50', '#8BC34A', '#FFC107', '#17a2b8'],
-                            borderColor: '#fff', borderWidth: 2, hoverOffset: 4
-                        }]
-                    }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-                });
-    
-            } catch (err) {
-                console.error("Error fetching admin data:", err);
-                document.getElementById('inquiry-table-body').innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding: 40px;">Failed to load data. Please check the console.</td></tr>`;
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
             }
         }
+    });
     
-        document.getElementById('inquiry-table-body').addEventListener('click', function (event) {
-            const button = event.target.closest('button');
-            if (!button) return;
-            const inquiryId = button.dataset.id;
-            if (button.title === 'Delete') {
-                if (confirm(`Are you sure you want to delete this inquiry?`)) {
-                    console.log(`(Simulated) Deleting inquiry with ID: ${inquiryId}`);
-                    button.closest('tr').remove();
+    // Inquiry types chart
+    const inquiryCtx = document.getElementById('inquiryTypesChart').getContext('2d');
+    inquiryTypesChart = new Chart(inquiryCtx, {
+        type: 'doughnut',
+        data: {
+            labels: data.inquiryTypes.map(i => i.type),
+            datasets: [{
+                label: 'Inquiries',
+                data: data.inquiryTypes.map(i => i.count),
+                backgroundColor: [
+                    'rgba(67, 97, 238, 0.8)',
+                    'rgba(103, 114, 229, 0.8)',
+                    'rgba(159, 168, 242, 0.8)',
+                    'rgba(200, 205, 251, 0.8)'
+                ],
+                borderColor: '#fff',
+                borderWidth: 2,
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleFont: { size: 14 },
+                    bodyFont: { size: 12 },
+                    padding: 12,
+                    usePointStyle: true
                 }
-            } else {
-                alert(`Action: ${button.title} | Inquiry ID: ${inquiryId}`);
-            }
-        });
+            },
+            cutout: '70%'
+        }
+    });
+}
+
+// Event listeners
+function setupEventListeners() {
+    // Sidebar toggle
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        adminContent.classList.toggle('sidebar-active');
+    });
     
-        document.addEventListener("DOMContentLoaded", fetchAdminStats);
-    </script>
+    // Quick action buttons
+    addProductBtn.addEventListener('click', () => {
+        document.querySelector('.admin-main-content > section:not(.products-section)').style.display = 'none';
+        productsSection.style.display = 'block';
+    });
+    
+    writeBlogBtn.addEventListener('click', () => {
+        document.querySelector('.admin-main-content > section:not(.blog-section)').style.display = 'none';
+        blogSection.style.display = 'block';
+    });
+    
+    // Back to dashboard buttons
+    backToDashboard.addEventListener('click', () => {
+        productsSection.style.display = 'none';
+        document.querySelector('.admin-main-content > section').style.display = 'block';
+    });
+    
+    backToDashboardBlog.addEventListener('click', () => {
+        blogSection.style.display = 'none';
+        document.querySelector('.admin-main-content > section').style.display = 'block';
+    });
+    
+    // Add product form toggle
+    showAddProductForm.addEventListener('click', () => {
+        document.getElementById('add-product-form').style.display = 'block';
+    });
+    
+    cancelAddProduct.addEventListener('click', () => {
+        document.getElementById('add-product-form').style.display = 'none';
+    });
+    
+    // Add blog form toggle
+    showAddBlogForm.addEventListener('click', () => {
+        document.getElementById('add-blog-form').style.display = 'block';
+    });
+    
+    cancelAddBlog.addEventListener('click', () => {
+        document.getElementById('add-blog-form').style.display = 'none';
+    });
+    
+    // Form submissions
+    productForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Product added successfully!');
+        productForm.reset();
+        document.getElementById('add-product-form').style.display = 'none';
+    });
+    
+    blogForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Blog post published successfully!');
+        blogForm.reset();
+        document.getElementById('blog-content').innerHTML = '';
+        document.getElementById('add-blog-form').style.display = 'none';
+    });
+    
+    // Inquiry table actions
+    document.getElementById('inquiry-table-body').addEventListener('click', function (event) {
+        const button = event.target.closest('button');
+        if (!button) return;
+        const inquiryId = button.dataset.id;
+        
+        if (button.title === 'Delete') {
+            if (confirm('Are you sure you want to delete this inquiry?')) {
+                button.closest('tr').remove();
+                showToast('Inquiry deleted successfully!');
+            }
+        } else {
+            showToast(`Action: ${button.title} | Inquiry ID: ${inquiryId}`);
+        }
+    });
+    
+    // Products table actions
+    document.getElementById('products-table-body').addEventListener('click', function (event) {
+        const button = event.target.closest('button');
+        if (!button) return;
+        const productId = button.dataset.id;
+        
+        if (button.title === 'Delete') {
+            if (confirm('Are you sure you want to delete this product?')) {
+                button.closest('tr').remove();
+                showToast('Product deleted successfully!');
+            }
+        } else {
+            showToast(`Action: ${button.title} | Product ID: ${productId}`);
+        }
+    });
+    
+    // Blogs table actions
+    document.getElementById('blogs-table-body').addEventListener('click', function (event) {
+        const button = event.target.closest('button');
+        if (!button) return;
+        const blogId = button.dataset.id;
+        
+        if (button.title === 'Delete') {
+            if (confirm('Are you sure you want to delete this blog post?')) {
+                button.closest('tr').remove();
+                showToast('Blog post deleted successfully!');
+            }
+        } else {
+            showToast(`Action: ${button.title} | Blog ID: ${blogId}`);
+        }
+    });
+}
+
+// Show toast notification
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 300);
+    }, 3000);
+}
+
+// Initialize the dashboard when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+    initDashboard();
+    setupEventListeners();
+});
+</script> 
 </body>
 </html>

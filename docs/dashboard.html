@@ -572,7 +572,7 @@
           <li><a href="index.html#home">Home</a></li>
           <li><a href="#" class="active">Dashboard</a></li>
           <li><a href="profile.html">Profile</a></li>
-          <li><a href="payment.html">Payment</a></li>
+          <li><a href="payment.html">My Payment</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
         <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
@@ -657,75 +657,143 @@
   <!-- SCRIPT -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // 1. Check for a logged-in user
       const user = JSON.parse(localStorage.getItem("loggedInUser"));
   
       if (!user) {
+        // If no user is found, redirect to the login page
         window.location.href = "login.html";
         return;
       }
       
+      // 2. Populate user-specific elements
       const usernameElem = document.getElementById("username");
-      if (usernameElem) usernameElem.textContent = user.name || "User";
+      if (usernameElem) {
+          // Use the user's first name for a more personal touch
+          const firstName = user.name ? user.name.split(' ')[0] : "User";
+          usernameElem.textContent = firstName;
+      }
 
       const dashboardAvatar = document.getElementById("dashboardAvatar");
-      const defaultAvatar = "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg";
-      if (dashboardAvatar) dashboardAvatar.src = user.avatar || defaultAvatar;
-
+      const defaultAvatar = "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"; // A default placeholder
+      if (dashboardAvatar) {
+          dashboardAvatar.src = user.avatar || defaultAvatar;
+      }
+      
+      // 3. Perform initial setup functions
       updateCartCount();
+      addLoginToActivityFeed(); // Make the activity feed dynamic
     });
   
+    /**
+     * Logs the user out by clearing storage and redirecting to the login page.
+     */
     function logout() {
       localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("cartCount"); // Also clear cart
       window.location.href = "login.html";
     }
+
+    /**
+     * DYNAMIC: Creates and prepends a "logged in" message to the activity feed.
+     */
+    function addLoginToActivityFeed() {
+        const timeline = document.querySelector('.activity-timeline');
+        if (!timeline) return; // Exit if the timeline element isn't found
+
+        const date = new Date();
+        const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        const newItem = document.createElement('div');
+        newItem.className = 'activity-item';
+        newItem.innerHTML = `
+            <div class="activity-icon" style="background-color: #17a2b8;"><i class="fas fa-sign-in-alt"></i></div>
+            <div class="activity-content">
+                <div class="activity-title">You successfully logged in</div>
+                <div class="activity-date">Today, ${timeString}</div>
+            </div>
+        `;
+        // Use prepend to add the new activity to the top of the list
+        timeline.prepend(newItem);
+    }
     
-    // --- UPDATED MODAL JAVASCRIPT ---
+    /**
+     * DYNAMIC: Displays a modal with content based on the type.
+     * The 'plan' case is now personalized based on the user's stored goal.
+     * @param {string} type - The type of modal to show ('plan', 'order', etc.)
+     */
     function showModal(type) {
       event.preventDefault();
       const modal = document.getElementById('infoModal');
       const modalIcon = document.getElementById('modalIcon');
       const modalTitle = document.getElementById('modalTitle');
       const modalMessage = document.getElementById('modalMessage');
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
   
       switch (type) {
         case 'plan':
-          modalIcon.className = 'modal-icon fas fa-heartbeat';
-          modalTitle.textContent = 'My Health Plan';
-          modalMessage.innerHTML = 'Calories today: <b>1,850</b><br>Protein: <b>90g</b><br>Next meal: <b>Quinoa Salad at 1:00 PM</b>';
+          modalIcon.innerHTML = '<i class="fas fa-heartbeat"></i>';
+          modalTitle.textContent = 'My Personalized Health Plan';
+
+          // --- DYNAMIC CONTENT ---
+          let planMessage = 'Focus on balanced meals with whole foods. Consistency is the key to general wellness!'; // Default message
+          if (user && user.goal) {
+              switch (user.goal) {
+                  case 'weight-loss':
+                      planMessage = 'Today\'s Focus: Aim for a slight calorie deficit and prioritize lean protein. Green vegetables are your best friend for satiety!';
+                      break;
+                  case 'energy-boost':
+                      planMessage = 'Today\'s Focus: Fuel up with complex carbs like oats and quinoa for sustained energy. Don\'t forget to stay hydrated!';
+                      break;
+                  case 'detox':
+                      planMessage = 'Today\'s Focus: Support your body\'s natural processes with antioxidant-rich berries and plenty of lemon water.';
+                      break;
+                  case 'stress-management':
+                      planMessage = 'Today\'s Focus: Incorporate magnesium-rich foods like nuts and seeds. Consider a 5-minute mindfulness session post-lunch.';
+                      break;
+              }
+          }
+          modalMessage.innerHTML = planMessage;
           break;
-        case 'order':
-          modalIcon.className = 'modal-icon fas fa-shopping-basket';
+          
+        case 'order': // These remain static as examples
+          modalIcon.innerHTML = '<i class="fas fa-shopping-basket"></i>';
           modalTitle.textContent = 'Order History';
           modalMessage.innerHTML = 'Last order: <b>Organic Green Tea</b> ($12.99)<br>Delivered: <b>2 days ago</b><br>Pending: <b>Chia Seeds</b>';
           break;
         case 'session':
-          modalIcon.className = 'modal-icon fas fa-calendar-check';
+          modalIcon.innerHTML = '<i class="fas fa-calendar-check"></i>';
           modalTitle.textContent = 'Book a Session';
           modalMessage.innerHTML = 'Next session: <b>June 28, 2024</b> at <b>3:00 PM</b><br>Consultant: <b>Dr. Smith</b>';
           break;
         case 'tips':
-          modalIcon.className = 'modal-icon fas fa-lightbulb';
+          modalIcon.innerHTML = '<i class="fas fa-lightbulb"></i>';
           modalTitle.textContent = 'Tips & Resources';
           modalMessage.innerHTML = 'New: <b>"5 Ways to Boost Your Energy"</b><br>Popular: <b>"Plant-Based Protein Guide"</b>';
           break;
       }
   
-      // New animation logic
+      // Animation logic to show the modal
       modal.style.display = 'flex';
       setTimeout(() => {
           modal.classList.add('show');
       }, 10);
     }
   
+    /**
+     * Hides the modal with a fade-out animation.
+     */
     function closeModal() {
       const modal = document.getElementById('infoModal');
       modal.classList.remove('show');
       
+      // Wait for the CSS transition to finish before hiding the element
       setTimeout(() => {
           modal.style.display = 'none'; 
-      }, 300); // Must match transition duration in CSS
+      }, 300); 
     }
   
+    // Closes modal if user clicks outside of the modal content
     window.onclick = function (event) {
       const modal = document.getElementById('infoModal');
       if (event.target == modal) {
@@ -733,75 +801,87 @@
       }
     }
   
+    // Simple navigation function
     function goToPayment() {
       window.location.href = "payment.html";
     }
   
+    // Updates a cart counter if it exists on the page
     function updateCartCount() {
       const cartCount = localStorage.getItem('cartCount') || 0;
       const cartCountElem = document.querySelector('.cart-count');
       if (cartCountElem) cartCountElem.textContent = cartCount;
     }
-    // chatbot
-function toggleChatbot() {
-  const chatBox = document.getElementById("chatBox");
-  chatBox.style.display = chatBox.style.display === "block" ? "none" : "block";
-}
+    
+    // --- CHATBOT FUNCTIONALITY (Unchanged) ---
+    function toggleChatbot() {
+      const chatBox = document.getElementById("chatBox");
+      const isVisible = chatBox.style.display === "block";
+      chatBox.style.display = isVisible ? "none" : "block";
+    }
 
-function handleQuestion(type) {
-  const chatBody = document.getElementById("chatBody");
-  let response = "";
+    function handleQuestion(type) {
+      const chatBody = document.getElementById("chatBody");
+      let responseText = "";
 
-  if (type === "nutrition") {
-    response = "Eat whole foods, drink plenty of water, and avoid processed sugar!";
-  } else if (type === "detox") {
-    response = "Try a lemon-honey warm water detox every morning. Consult a doctor first!";
-  } else if (type === "exercise") {
-    response = "Start with 30 mins of daily walking or yoga to improve flexibility and strength.";
-  } else {
-    response = "Sorry, I didn't understand that.";
-  }
+      switch (type) {
+        case "nutrition":
+          responseText = "Eat whole foods, drink plenty of water, and avoid processed sugar!";
+          break;
+        case "detox":
+          responseText = "Try a lemon-honey warm water detox every morning. Consult a doctor first!";
+          break;
+        case "exercise":
+          responseText = "Start with 30 mins of daily walking or yoga to improve flexibility and strength.";
+          break;
+        default:
+          responseText = "Sorry, I didn't understand that.";
+          break;
+      }
 
-  appendMessage("You", type);
-  appendMessage("Bot", response);
-}
+      appendMessage("You", type.replace(/-/g, ' '));
+      setTimeout(() => appendMessage("WellnessBot", responseText), 500); // Simulate bot thinking
+    }
 
-function sendCustomMessage() {
-  const input = document.getElementById("userInput");
-  const message = input.value.trim();
-  if (message === "") return;
+    function sendCustomMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (message === "") return;
 
-  appendMessage("You", message);
+      appendMessage("You", message);
+      input.value = ""; // Clear input immediately
 
-  let response = "Hmm, I'm not sure about that. Try asking about nutrition, detox, or exercise.";
+      let responseText = "Hmm, I'm not sure about that. Try asking about our pre-set topics like 'nutrition', 'detox', or 'exercise'.";
 
-  if (message.toLowerCase().includes("nutrition")) {
-    response = "A balanced diet is key! Include leafy greens, grains, and hydration.";
-  } else if (message.toLowerCase().includes("detox")) {
-    response = "For detox, try herbal teas and natural fruits. Avoid packaged foods.";
-  } else if (message.toLowerCase().includes("exercise")) {
-    response = "Try brisk walking, yoga, or short home workouts. Start small!";
-  }
+      const lowerCaseMessage = message.toLowerCase();
+      if (lowerCaseMessage.includes("nutrition")) {
+        responseText = "A balanced diet is key! Include leafy greens, whole grains, and proper hydration.";
+      } else if (lowerCaseMessage.includes("detox")) {
+        responseText = "For a gentle detox, try herbal teas and increase your intake of fruits and vegetables. Avoid packaged foods.";
+      } else if (lowerCaseMessage.includes("exercise")) {
+        responseText = "Consistency over intensity! Try brisk walking, yoga, or short home workouts to build a sustainable habit.";
+      }
+      
+      setTimeout(() => appendMessage("WellnessBot", responseText), 800); // Simulate bot thinking
+    }
 
-  appendMessage("Bot", response);
-  input.value = "";
-}
+    function checkEnter(event) {
+      if (event.key === "Enter") {
+        sendCustomMessage();
+      }
+    }
 
-function checkEnter(e) {
-  if (e.key === "Enter") {
-    sendCustomMessage();
-  }
-}
+    function appendMessage(sender, text) {
+      const chatBody = document.getElementById("chatBody");
+      const p = document.createElement("p");
+      p.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chatBody.appendChild(p);
+      // Automatically scroll to the bottom of the chat
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
 
-function appendMessage(sender, text) {
-  const chatBody = document.getElementById("chatBody");
-  const p = document.createElement("p");
-  p.innerHTML = `<strong>${sender}:</strong> ${text}`;
-  chatBody.appendChild(p);
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
+</script>
 
-  </script>
   <!-- chatbot -->
  <div class="chatbot-container">
   <div class="chat-toggle" onclick="toggleChatbot()">

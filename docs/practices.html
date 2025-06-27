@@ -545,6 +545,150 @@
             animation: floating 6s ease-in-out infinite;
         }
         
+        /* Article Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .article-modal {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(50px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .modal-overlay.active .article-modal {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+        
+        .modal-category {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: var(--primary-light);
+            border-radius: 20px;
+        }
+        
+        .modal-title {
+            font-size: 2.2rem;
+            margin: 0 0 20px;
+            color: var(--dark-color);
+            line-height: 1.3;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--primary-dark);
+        }
+        
+        .modal-content {
+            padding: 30px;
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .modal-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .author-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .article-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .article-content p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .article-content h3 {
+            font-size: 1.6rem;
+            margin: 30px 0 20px;
+            color: var(--dark-color);
+        }
+        
+        .article-content ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .article-content li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 992px) {
             .hero-title {
@@ -556,6 +700,14 @@
             }
             
             .featured-post-image {
+                height: 300px;
+            }
+            
+            .modal-title {
+                font-size: 1.8rem;
+            }
+            
+            .modal-image {
                 height: 300px;
             }
         }
@@ -585,6 +737,15 @@
             .newsletter-button {
                 border-radius: 50px;
                 padding: 15px;
+            }
+            
+            .modal-title {
+                font-size: 1.6rem;
+                margin-right: 30px;
+            }
+            
+            .modal-image {
+                height: 200px;
             }
         }
     </style>
@@ -646,7 +807,7 @@
                             <p class="featured-post-category">Featured Article</p>
                             <h3 class="featured-post-title">Holistic Nutrition: Eating for Mind, Body and Soul</h3>
                             <p class="featured-post-excerpt">Discover how to nourish every aspect of your being with our comprehensive guide to holistic nutrition. Learn about the connection between food, mood, and energy levels, and how to create meals that satisfy both your body and spirit.</p>
-                            <a href="#" class="blog-card-readmore">Read Featured Article <i class="fas fa-arrow-right"></i></a>
+                            <a href="#" class="blog-card-readmore" onclick="openArticleModal('featured')">Read Featured Article <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                     
@@ -659,20 +820,20 @@
                             <p class="blog-card-category">Nutrition</p>
                             <h3 class="blog-card-title">A Guide to Mindful Eating</h3>
                             <p class="blog-card-excerpt">Practice eating slowly, without distractions, to improve digestion, absorption, and build a healthier relationship with food. Learn techniques to savor each bite and listen to your body's natural hunger cues.</p>
-                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
+                            <a href="#" class="blog-card-readmore" onclick="openArticleModal('mindful-eating')">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
 
                     <!-- Blog Post 2: Daily Movement -->
                     <article class="blog-card fade-in-section">
                         <div class="card-image-wrapper">
-                           <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1520&q=80" alt="Person doing yoga outdoors">
+                           <img src="yoga.png" alt="Person doing yoga outdoors">
                         </div>
                         <div class="blog-card-content">
                             <p class="blog-card-category">Fitness</p>
                             <h3 class="blog-card-title">Finding Joy in Daily Movement</h3>
                              <p class="blog-card-excerpt">Incorporate at least 30 minutes of joyful movement into your day. This could be anything from a brisk walk in nature to dancing. Discover how movement can be medicine for both body and mind.</p>
-                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
+                            <a href="#" class="blog-card-readmore" onclick="openArticleModal('daily-movement')">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
 
@@ -685,20 +846,20 @@
                             <p class="blog-card-category">Health Habits</p>
                             <h3 class="blog-card-title">The Crucial Importance of Hydration</h3>
                             <p class="blog-card-excerpt">Proper hydration is vital for energy, brain function, skin health, and your body's natural detoxification processes. Learn creative ways to stay hydrated and recognize the signs of dehydration.</p>
-                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
+                            <a href="#" class="blog-card-readmore" onclick="openArticleModal('hydration')">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                     
                     <!-- Blog Post 4: Stress Reduction -->
                     <article class="blog-card fade-in-section">
                         <div class="card-image-wrapper">
-                            <img src="yoga.png" alt="Person meditating">
+                            <img src="meditation.jpg" alt="Person meditating">
                         </div>
                         <div class="blog-card-content">
                            <p class="blog-card-category">Mindfulness</p>
                             <h3 class="blog-card-title">Simple Techniques for Stress Reduction</h3>
                            <p class="blog-card-excerpt">Dedicate a few minutes daily to a stress-reducing activity like meditation, deep breathing, or spending time in nature. Explore our 5-minute techniques that fit even the busiest schedules.</p>
-                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
+                            <a href="#" class="blog-card-readmore" onclick="openArticleModal('stress-reduction')">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
 
@@ -711,7 +872,7 @@
                             <p class="blog-card-category">Lifestyle</p>
                             <h3 class="blog-card-title">A Guide to a Restful Digital Detox</h3>
                             <p class="blog-card-excerpt">Commit to turning off all screens at least 60 minutes before bed to improve your sleep quality and morning energy levels. Our step-by-step guide makes digital detox achievable.</p>
-                            <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
+                            <a href="#" class="blog-card-readmore" onclick="openArticleModal('digital-detox')">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
 
@@ -724,7 +885,7 @@
                            <p class="blog-card-category">Health Habits</p>
                            <h3 class="blog-card-title">Unlocking the Power of Quality Sleep</h3>
                            <p class="blog-card-excerpt">Quality sleep is the foundation of health. Discover simple, effective strategies to improve your sleep hygiene for better overall vitality, including our bedtime ritual checklist.</p>
-                           <a href="#" class="blog-card-readmore">Read More <i class="fas fa-arrow-right"></i></a>
+                           <a href="#" class="blog-card-readmore" onclick="openArticleModal('quality-sleep')">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -743,6 +904,30 @@
             </div>
         </section>
     </main>
+
+    <!-- Article Modal -->
+    <div class="modal-overlay" id="articleModal">
+        <div class="article-modal">
+            <div class="modal-header">
+                <span class="modal-category" id="modalCategory">Nutrition</span>
+                <h2 class="modal-title" id="modalTitle">Article Title</h2>
+                <button class="modal-close" onclick="closeArticleModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <img src="" alt="Article image" class="modal-image" id="modalImage">
+                <div class="modal-author">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Author" class="author-avatar">
+                    <div class="author-info">
+                        <span class="author-name">Dr. Sarah Johnson</span>
+                        <span class="article-date" id="articleDate">June 15, 2023</span>
+                    </div>
+                </div>
+                <div class="article-content" id="articleContent">
+                    <!-- Content will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- chatbot (Unchanged) -->
     <div class="chatbot-container">
@@ -824,8 +1009,352 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
     <script>
+    // Article content data
+    const articleData = {
+        'featured': {
+            title: 'Holistic Nutrition: Eating for Mind, Body and Soul',
+            category: 'Featured Article',
+            image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80',
+            date: 'May 22, 2023',
+            content: `
+                <p>Holistic nutrition is about more than just the food on your plate—it's about nourishing every aspect of your being. This comprehensive approach considers how your dietary choices affect your physical health, mental clarity, emotional balance, and even spiritual connection.</p>
+                
+                <h3>The Mind-Body-Food Connection</h3>
+                <p>Research continues to reveal the profound connection between our gut and brain, often called the "gut-brain axis." The foods we eat can significantly impact our mood, energy levels, and cognitive function. For example:</p>
+                <ul>
+                    <li>Omega-3 fatty acids (found in walnuts, flaxseeds, and fatty fish) support brain health and may reduce symptoms of depression</li>
+                    <li>Fermented foods introduce beneficial probiotics that influence neurotransmitter production</li>
+                    <li>Complex carbohydrates help regulate serotonin levels for mood stability</li>
+                </ul>
+                
+                <h3>Creating Balanced Meals</h3>
+                <p>A holistic approach to meal planning considers:</p>
+                <ul>
+                    <li><strong>Macronutrient balance:</strong> Combine quality proteins, healthy fats, and complex carbs</li>
+                    <li><strong>Color variety:</strong> Different colored fruits and vegetables provide diverse phytonutrients</li>
+                    <li><strong>Preparation methods:</strong> Some nutrients are enhanced by cooking, while others are best raw</li>
+                    <li><strong>Eating environment:</strong> Create a peaceful atmosphere free from distractions</li>
+                </ul>
+                
+                <h3>Beyond Nutrition: The Energetics of Food</h3>
+                <p>Many traditional healing systems recognize that foods carry different energetic qualities. For example:</p>
+                <ul>
+                    <li>Root vegetables are considered grounding</li>
+                    <li>Leafy greens are cleansing and light</li>
+                    <li>Spices can be warming or cooling to the system</li>
+                </ul>
+                <p>By tuning into how different foods make you feel, you can create meals that truly nourish all aspects of your being.</p>
+            `
+        },
+        'mindful-eating': {
+            title: 'A Guide to Mindful Eating',
+            category: 'Nutrition',
+            image: 'https://images.unsplash.com/photo-1540420773420-251dbb3f9014?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+            date: 'June 10, 2023',
+            content: `
+                <p>Mindful eating is the practice of bringing full attention to the process of eating—to all the tastes, smells, thoughts, and feelings that arise during a meal. This ancient practice, rooted in Buddhist teachings, has gained modern scientific support for its benefits to digestion, weight management, and overall health.</p>
+                
+                <h3>The Benefits of Mindful Eating</h3>
+                <ul>
+                    <li>Improved digestion and nutrient absorption</li>
+                    <li>Better recognition of hunger and fullness cues</li>
+                    <li>Reduced binge eating and emotional eating</li>
+                    <li>Greater enjoyment and satisfaction from meals</li>
+                    <li>Healthier relationship with food</li>
+                </ul>
+                
+                <h3>How to Practice Mindful Eating</h3>
+                <p>Follow these steps to begin your mindful eating practice:</p>
+                <ol>
+                    <li><strong>Start with a pause:</strong> Before eating, take a moment to breathe and appreciate your food</li>
+                    <li><strong>Engage your senses:</strong> Notice the colors, textures, and aromas of your meal</li>
+                    <li><strong>Chew thoroughly:</strong> Aim for 20-30 chews per bite to aid digestion</li>
+                    <li><strong>Eat without distractions:</strong> Turn off screens and focus solely on your meal</li>
+                    <li><strong>Check in with your body:</strong> Pause halfway through to assess your hunger level</li>
+                    <li><strong>Express gratitude:</strong> Take a moment to appreciate the nourishment</li>
+                </ol>
+                
+                <h3>Mindful Eating Exercises</h3>
+                <p>Try these simple exercises to deepen your practice:</p>
+                <p><strong>The Raisin Exercise:</strong> Spend five minutes slowly eating a single raisin, noticing every aspect of the experience from the texture to the flavor release.</p>
+                <p><strong>Silent Meals:</strong> Once a week, eat a meal in complete silence, focusing only on the act of eating.</p>
+                <p><strong>Non-Dominant Hand:</strong> Try eating with your non-dominant hand to slow down and increase awareness.</p>
+            `
+        },
+        'daily-movement': {
+            title: 'Finding Joy in Daily Movement',
+            category: 'Fitness',
+            image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1520&q=80',
+            date: 'June 5, 2023',
+            content: `
+                <p>Movement is medicine for both body and mind, yet many of us approach exercise as a chore rather than a joy. This guide will help you rediscover the pleasure of movement and integrate it naturally into your daily life.</p>
+                
+                <h3>Why Joyful Movement Matters</h3>
+                <p>When exercise feels like punishment:</p>
+                <ul>
+                    <li>We're less likely to stick with it</li>
+                    <li>Our bodies produce stress hormones that can counteract benefits</li>
+                    <li>We miss the mind-body connection that makes movement truly transformative</li>
+                </ul>
+                <p>Joyful movement, on the other hand:</p>
+                <ul>
+                    <li>Releases endorphins that boost mood</li>
+                    <li>Feels sustainable long-term</li>
+                    <li>Can be adapted to any fitness level or physical limitation</li>
+                </ul>
+                
+                <h3>Discovering Your Movement Personality</h3>
+                <p>Not everyone enjoys the same types of movement. Consider what fits your personality:</p>
+                <ul>
+                    <li><strong>Social movers:</strong> Enjoy group classes, team sports, or walking with friends</li>
+                    <li><strong>Solitary movers:</strong> Prefer solo activities like swimming, running, or home workouts</li>
+                    <li><strong>Nature lovers:</strong> Thrive with hiking, outdoor yoga, or gardening</li>
+                    <li><strong>Creative types:</strong> Enjoy dance, martial arts, or movement theater</li>
+                    <li><strong>Competitive spirits:</strong> Like sports with measurable progress or friendly competition</li>
+                </ul>
+                
+                <h3>Simple Ways to Move More Every Day</h3>
+                <p>Incorporate movement naturally:</p>
+                <ul>
+                    <li>Take "walking meetings" at work</li>
+                    <li>Dance while cooking dinner</li>
+                    <li>Stretch during TV commercials</li>
+                    <li>Park farther away from destinations</li>
+                    <li>Take the stairs whenever possible</li>
+                    <li>Try a standing or treadmill desk</li>
+                </ul>
+            `
+        },
+        'hydration': {
+            title: 'The Crucial Importance of Hydration',
+            category: 'Health Habits',
+            image: 'https://images.unsplash.com/photo-1560934005-13e925c43236?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+            date: 'May 30, 2023',
+            content: `
+                <p>Water makes up about 60% of our body weight and is involved in nearly every bodily function. Yet many of us walk through life chronically dehydrated without realizing it. This comprehensive guide will help you understand why hydration matters and how to optimize it.</p>
+                
+                <h3>Why Hydration is Essential</h3>
+                <p>Water plays crucial roles in:</p>
+                <ul>
+                    <li><strong>Brain function:</strong> Even mild dehydration can impair concentration and memory</li>
+                    <li><strong>Digestion:</strong> Water helps break down food and prevent constipation</li>
+                    <li><strong>Detoxification:</strong> Flushes toxins through kidneys, liver, and skin</li>
+                    <li><strong>Joint health:</strong> Lubricates joints and cushions organs</li>
+                    <li><strong>Temperature regulation:</strong> Helps maintain stable body temperature</li>
+                    <li><strong>Skin health:</strong> Improves elasticity and reduces signs of aging</li>
+                </ul>
+                
+                <h3>Signs of Dehydration</h3>
+                <p>Watch for these often-overlooked signs:</p>
+                <ul>
+                    <li>Fatigue or low energy</li>
+                    <li>Headaches</li>
+                    <li>Brain fog or difficulty concentrating</li>
+                    <li>Dark yellow urine</li>
+                    <li>Dry skin or lips</li>
+                    <li>Muscle cramps</li>
+                    <li>Constipation</li>
+                    <li>Mood changes or irritability</li>
+                </ul>
+                
+                <h3>Creative Hydration Strategies</h3>
+                <p>If you struggle to drink enough water, try these tips:</p>
+                <ul>
+                    <li>Start your day with a glass of room-temperature water with lemon</li>
+                    <li>Invest in a beautiful water bottle you'll want to carry everywhere</li>
+                    <li>Set hourly reminders on your phone or computer</li>
+                    <li>Infuse water with fruits, herbs, or cucumbers for flavor</li>
+                    <li>Eat water-rich foods like watermelon, cucumbers, and oranges</li>
+                    <li>Use a hydration tracking app</li>
+                    <li>Drink herbal teas throughout the day</li>
+                </ul>
+            `
+        },
+        'stress-reduction': {
+            title: 'Simple Techniques for Stress Reduction',
+            category: 'Mindfulness',
+            image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1398&q=80',
+            date: 'June 12, 2023',
+            content: `
+                <p>In our fast-paced world, chronic stress has become a common health concern linked to numerous physical and mental health issues. The good news? Simple, evidence-based techniques can help mitigate stress's harmful effects. Here's your guide to practical stress reduction.</p>
+                
+                <h3>The Physiology of Stress</h3>
+                <p>When we perceive a threat (physical or psychological), our bodies activate the "fight or flight" response:</p>
+                <ul>
+                    <li>Adrenaline and cortisol flood the system</li>
+                    <li>Heart rate and blood pressure increase</li>
+                    <li>Digestion slows</li>
+                    <li>Muscles tense</li>
+                    <li>Immune function is suppressed</li>
+                </ul>
+                <p>While helpful in true emergencies, chronic activation of this response harms health. These techniques help activate the relaxation response.</p>
+                
+                <h3>5-Minute Stress Relievers</h3>
+                <p>Quick techniques for stressful moments:</p>
+                <ol>
+                    <li><strong>Box Breathing:</strong> Inhale for 4 counts, hold for 4, exhale for 4, hold for 4. Repeat.</li>
+                    <li><strong>5-4-3-2-1 Grounding:</strong> Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste.</li>
+                    <li><strong>Progressive Muscle Relaxation:</strong> Tense then release muscles from toes to head.</li>
+                    <li><strong>Cold Water Splash:</strong> Cool water on the face triggers the dive reflex, slowing heart rate.</li>
+                    <li><strong>Humming Breath:</strong> Exhale while humming to stimulate the vagus nerve.</li>
+                </ol>
+                
+                <h3>Lifestyle Approaches to Stress Reduction</h3>
+                <p>Build resilience with daily practices:</p>
+                <ul>
+                    <li><strong>Morning sunlight:</strong> 10-15 minutes of morning light regulates circadian rhythms</li>
+                    <li><strong>Nature connection:</strong> Even brief time in nature lowers cortisol</li>
+                    <li><strong>Digital boundaries:</strong> Create tech-free times and spaces</li>
+                    <li><strong>Gratitude practice:</strong> Daily noting of things you appreciate</li>
+                    <li><strong>Movement breaks:</strong> Short walks or stretches throughout the day</li>
+                </ul>
+            `
+        },
+        'digital-detox': {
+            title: 'A Guide to a Restful Digital Detox',
+            category: 'Lifestyle',
+            image: 'https://images.unsplash.com/photo-1599658880436-559d57a9df5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+            date: 'June 8, 2023',
+            content: `
+                <p>In our hyperconnected world, constant digital stimulation can lead to anxiety, poor sleep, and reduced attention spans. A digital detox—periodic breaks from electronic devices—can restore mental clarity and improve wellbeing. Here's how to do it effectively.</p>
+                
+                <h3>Signs You Need a Digital Detox</h3>
+                <ul>
+                    <li>Checking your phone first thing in the morning</li>
+                    <li>Difficulty concentrating on single tasks</li>
+                    <li>Feeling anxious when separated from your devices</li>
+                    <li>Mindless scrolling through social media</li>
+                    <li>Sleep disturbances or insomnia</li>
+                    <li>Eye strain or headaches from screen time</li>
+                    <li>Reduced in-person social interactions</li>
+                </ul>
+                
+                <h3>Digital Detox Strategies</h3>
+                <p>Choose the approach that fits your needs:</p>
+                <ul>
+                    <li><strong>Micro Detox:</strong> 30-60 minutes daily without screens</li>
+                    <li><strong>Weekly Reset:</strong> One screen-free day per week</li>
+                    <li><strong>App-Specific Detox:</strong> Break from particular apps or platforms</li>
+                    <li><strong>Full Digital Retreat:</strong> Weekend or week-long complete break</li>
+                </ul>
+                
+                <h3>Creating Healthy Digital Boundaries</h3>
+                <p>Establish sustainable habits:</p>
+                <ol>
+                    <li><strong>No screens in bedroom:</strong> Charge devices outside sleeping area</li>
+                    <li><strong>Tech-free meals:</strong> Focus on food and company</li>
+                    <li><strong>Notification management:</strong> Turn off non-essential alerts</li>
+                    <li><strong>Screen time tracking:</strong> Use built-in tools to monitor usage</li>
+                    <li><strong>Alternative activities:</strong> Keep books, puzzles, or art supplies handy</li>
+                    <li><strong>Grayscale mode:</strong> Make screens less visually stimulating</li>
+                </ol>
+                
+                <h3>The Benefits You'll Experience</h3>
+                <p>Regular digital detoxes can lead to:</p>
+                <ul>
+                    <li>Improved sleep quality</li>
+                    <li>Reduced anxiety and stress</li>
+                    <li>Enhanced focus and productivity</li>
+                    <li>Deeper personal connections</li>
+                    <li>Increased creativity</li>
+                    <li>More time for hobbies and self-care</li>
+                </ul>
+            `
+        },
+        'quality-sleep': {
+            title: 'Unlocking the Power of Quality Sleep',
+            category: 'Health Habits',
+            image: 'https://images.unsplash.com/photo-1495197359483-c154388da1cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+            date: 'June 18, 2023',
+            content: `
+                <p>Sleep is the foundation of health—affecting everything from immune function to emotional resilience. Yet many of us struggle with getting enough quality rest. This guide explores science-backed strategies for optimizing your sleep naturally.</p>
+                
+                <h3>Why Sleep Matters</h3>
+                <p>During quality sleep:</p>
+                <ul>
+                    <li>The brain clears metabolic waste</li>
+                    <li>Memories are consolidated and learning is reinforced</li>
+                    <li>Hormones regulating hunger and metabolism are balanced</li>
+                    <li>Muscles repair and grow</li>
+                    <li>The immune system strengthens</li>
+                    <li>Emotional experiences are processed</li>
+                </ul>
+                
+                <h3>Creating a Sleep-Inducing Bedroom</h3>
+                <p>Optimize your sleep environment:</p>
+                <ul>
+                    <li><strong>Temperature:</strong> Keep bedroom between 60-67°F (15-19°C)</li>
+                    <li><strong>Darkness:</strong> Use blackout curtains and cover LED lights</li>
+                    <li><strong>Quiet:</strong> Consider white noise or earplugs if needed</li>
+                    <li><strong>Comfort:</strong> Invest in quality mattress and pillows</li>
+                    <li><strong>Air quality:</strong> Use air purifier or open windows when possible</li>
+                    <li><strong>Electronics-free:</strong> Remove TVs, computers, and charging phones</li>
+                </ul>
+                
+                <h3>The Perfect Nighttime Routine</h3>
+                <p>Wind down with these steps:</p>
+                <ol>
+                    <li><strong>Digital sunset:</strong> Turn off screens 60+ minutes before bed</li>
+                    <li><strong>Dim lights:</strong> Use warm, low lighting in evening</li>
+                    <li><strong>Relaxing activities:</strong> Read, journal, or practice gentle yoga</li>
+                    <li><strong>Warm bath:</strong> Body temperature drop after bathing promotes sleep</li>
+                    <li><strong>Herbal tea:</strong> Chamomile or passionflower can be calming</li>
+                    <li><strong>Gratitude practice:</strong> Reflect on positive moments from the day</li>
+                    <li><strong>Consistent schedule:</strong> Go to bed and wake at similar times daily</li>
+                </ol>
+                
+                <h3>Sleep-Promoting Foods</h3>
+                <p>Incorporate these into evening meals or snacks:</p>
+                <ul>
+                    <li><strong>Tryptophan sources:</strong> Turkey, nuts, seeds, tofu (precursor to melatonin)</li>
+                    <li><strong>Complex carbs:</strong> Whole grains help tryptophan reach the brain</li>
+                    <li><strong>Magnesium-rich foods:</strong> Leafy greens, bananas, almonds</li>
+                    <li><strong>Herbal teas:</strong> Chamomile, valerian root, lemon balm</li>
+                    <li><strong>Tart cherry juice:</strong> Natural source of melatonin</li>
+                </ul>
+            `
+        }
+    };
+
+    // Modal functions
+    function openArticleModal(articleId) {
+        const article = articleData[articleId];
+        const modal = document.getElementById('articleModal');
+        
+        // Set modal content
+        document.getElementById('modalTitle').textContent = article.title;
+        document.getElementById('modalCategory').textContent = article.category;
+        document.getElementById('modalImage').src = article.image;
+        document.getElementById('modalImage').alt = article.title;
+        document.getElementById('articleDate').textContent = article.date;
+        document.getElementById('articleContent').innerHTML = article.content;
+        
+        // Show modal
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeArticleModal() {
+        const modal = document.getElementById('articleModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Close modal when clicking outside content
+    document.getElementById('articleModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeArticleModal();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeArticleModal();
+        }
+    });
+
     // --- ON-SCROLL ANIMATION SCRIPT ---
     document.addEventListener("DOMContentLoaded", function() {
         // Select all elements that should fade in
@@ -880,6 +1409,66 @@
             heroSection.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
         }
     });
+
+    // Simple chatbot functions (unchanged)
+    function toggleChatbot() {
+        const chatBox = document.getElementById('chatBox');
+        chatBox.style.display = chatBox.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    function handleQuestion(type) {
+        const chatBody = document.getElementById('chatBody');
+        let response = '';
+        
+        switch(type) {
+            case 'nutrition':
+                response = "For optimal nutrition, focus on whole foods like vegetables, fruits, lean proteins, and healthy fats. Try to minimize processed foods and sugars.";
+                break;
+            case 'detox':
+                response = "Our 21-day detox program focuses on clean eating, hydration, and gentle movement. Would you like me to send you more details?";
+                break;
+            case 'exercise':
+                response = "A balanced exercise routine includes cardio, strength training, and flexibility work. Aim for 150 minutes of moderate activity per week.";
+                break;
+            default:
+                response = "I'm here to help with your wellness questions. Please ask me anything!";
+        }
+        
+        chatBody.innerHTML += `<p><strong>WellnessBot:</strong> ${response}</p>`;
+    }
+    
+    function sendCustomMessage() {
+        const userInput = document.getElementById('userInput');
+        const chatBody = document.getElementById('chatBody');
+        
+        if (userInput.value.trim() !== '') {
+            chatBody.innerHTML += `<p><strong>You:</strong> ${userInput.value}</p>`;
+            
+            // Simple response logic
+            const responses = [
+                "That's an excellent question about wellness!",
+                "I'd recommend focusing on balanced nutrition and regular movement.",
+                "Many of our members find meditation helpful for that concern.",
+                "Have you tried our guided wellness programs?",
+                "Let me connect you with a wellness specialist for that question."
+            ];
+            
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            setTimeout(() => {
+                chatBody.innerHTML += `<p><strong>WellnessBot:</strong> ${randomResponse}</p>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+            
+            userInput.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+    }
+    
+    function checkEnter(e) {
+        if (e.key === 'Enter') {
+            sendCustomMessage();
+        }
+    }
     </script>
 </body>
 </html>
