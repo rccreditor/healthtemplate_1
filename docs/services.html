@@ -1,18 +1,573 @@
---- START OF FILE services.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Services | Organic Wellness Hub</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #4CAF50;
+            --primary-dark: #388E3C;
+            --primary-light: #C8E6C9;
+            --secondary-color: #FF9800;
+            --dark-color: #263238;
+            --light-color: #f5f5f5;
+            --white: #ffffff;
+            --text-light: #757575;
+            --text-dark: #212121;
+            --accent-color: #8BC34A;
+            --gradient-green: linear-gradient(135deg, #4CAF50, #8BC34A);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--gradient-green);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        /* Header - Keep original */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section - Enhanced */
+        .page-header {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 100, 0, 0.8), rgba(0, 150, 136, 0.8));
+            z-index: 1;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            animation: fadeInUp 1s ease;
+            max-width: 800px;
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .page-header p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Services Grid - Enhanced */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-green);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .service-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .service-thumbnail {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover .service-thumbnail {
+            transform: scale(1.05);
+        }
+
+        .service-card-content {
+            padding: 30px;
+        }
+
+        .service-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .service-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--gradient-green);
+            transition: width 0.3s ease;
+        }
+
+        .service-card:hover h3::after {
+            width: 100px;
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* How It Works - Enhanced */
+        .about {
+            background: url('https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            color: white;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .about .container {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-content {
+            animation: fadeInLeft 1s ease;
+        }
+
+        .about-image {
+            animation: fadeInRight 1s ease;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            transform: perspective(1000px) rotateY(-10deg);
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: white;
+            position: relative;
+            display: inline-block;
+        }
+
+        .about h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-green);
+        }
+
+        .stats {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(10px);
+        }
+
+        .stat-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-item h3 i {
+            font-size: 1.5rem;
+        }
+
+        .stat-item p {
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Floating Elements */
+        .floating-leaf {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 0 C70 20, 80 40, 70 60 C60 80, 40 90, 20 80 C0 70, 10 40, 30 20 C40 10, 30 0, 50 0 Z" fill="%234CAF50" opacity="0.3"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 0;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-leaf:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-leaf:nth-child(2) {
+            top: 30%;
+            right: 8%;
+            animation-delay: 1s;
+        }
+
+        .floating-leaf:nth-child(3) {
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 2s;
+        }
+
+        /* Section Title Animation */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-green);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Parallax Effect */
+        .parallax-section {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .parallax-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        /* CTA Section - New */
+        .cta-section {
+            background: var(--gradient-green);
+            color: white;
+            text-align: center;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center;
+            background-size: cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .cta-btn {
+            background: white;
+            color: var(--primary-color);
+            font-weight: 700;
+            padding: 15px 40px;
+            border-radius: 50px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about .container {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                order: -1;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .page-header p {
+                font-size: 1.1rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .cta-content h2 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header with Navigation -->
+    <!-- Header with Navigation - Keep original -->
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -39,82 +594,106 @@
     </header>
 
     <main>
-        <!-- Page Header Section -->
-        <section class="page-header" style="background-image: url('https://img.freepik.com/free-photo/earth-day-celebration-concept_23-2151262649.jpg?uid=R156222685&ga=GA1.1.1994287649.1749448788&semt=ais_items_boosted&w=740'); padding: 180px 0 100px; text-align:center; color: white; background-size: cover; background-position: center;">
-            <div class="container" style="background: rgba(0,0,0,0.5); padding: 40px; border-radius: 15px;">
+        <!-- Hero Section - Enhanced -->
+        <section class="page-header">
+            <div class="floating-leaf"></div>
+            <div class="floating-leaf"></div>
+            <div class="floating-leaf"></div>
+            <div class="container">
                 <h1>Our Health & Wellness Services</h1>
-                <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto; color: #f1f8e9;">Tailored programs designed to help you achieve holistic well-being and vibrant health.</p>
+                <p>Tailored programs designed to help you achieve holistic well-being and vibrant health through nature's wisdom.</p>
+                <a href="contact.html" class="btn" style="margin-top: 30px;">Begin Your Wellness Journey</a>
             </div>
         </section>
 
-        <!-- Services Section -->
-        <section id="services" class="services" style="background: var(--white); padding-top: 80px;">
+        <!-- Services Grid - Enhanced -->
+        <section id="services" class="services">
             <div class="container">
-                <h2 style="color: var(--dark-color);">A Deeper Look at Our Offerings</h2>
-                <p class="section-subtitle" style="color: var(--text-light);">We provide personalized health solutions for your unique needs. Explore our core services below.</p>
-                <div class="services-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; cursor: default; width: 100%;">
-                    
-                    <div class="service-card" style="background: var(--light-color); flex: 1;">
+                <div class="section-title">
+                    <h2>A Deeper Look at Our Offerings</h2>
+                    <p class="section-subtitle">We provide personalized health solutions for your unique needs. Explore our core services below.</p>
+                </div>
+                
+                <div class="services-grid">
+                    <!-- Nutrition Planning -->
+                    <div class="service-card">
                         <img class="service-thumbnail" src="https://img.freepik.com/premium-photo/attractive-female-nutritionist-showing-example-weekly-menu-online-consultations-via-laptop-right-nutrition-healthy-eating_35674-17661.jpg?w=740" alt="Nutrition Planning">
-                        <h3 style="color: var(--dark-color);">Nutrition Planning</h3>
-                        <p style="color: var(--text-light);">Customized meal plans using organic, nutrient-dense foods tailored to your health goals, lifestyle, and dietary preferences.</p>
-                        <a href="contact.html" class="btn" style="margin-top: 20px;">Book a Consultation</a>
+                        <div class="service-card-content">
+                            <h3>Nutrition Planning</h3>
+                            <p>Customized meal plans using organic, nutrient-dense foods tailored to your health goals, lifestyle, and dietary preferences. Our certified nutritionists create science-backed plans that nourish your body.</p>
+                            <a href="contact.html" class="btn">Book a Consultation</a>
+                        </div>
                     </div>
                     
-                    <div class="service-card" style="background: var(--light-color); flex: 1;">
+                    <!-- Detox Programs -->
+                    <div class="service-card">
                         <img class="service-thumbnail" src="https://img.freepik.com/premium-photo/word-detox-is-made-from-chia-seeds-green-smoothies-ingredients-concept-diet-cleansing-body-healthy-eating-top-view-with-copy-space_94255-5284.jpg?w=740" alt="Detox Programs">
-                        <h3 style="color: var(--dark-color);">Detox Programs</h3>
-                        <p style="color: var(--text-light);">Gentle yet effective detoxification protocols using organic superfoods, herbal supplements, and guided fasting to reset your system.</p>
-                        <a href="contact.html" class="btn" style="margin-top: 20px;">Learn More</a>
+                        <div class="service-card-content">
+                            <h3>Detox Programs</h3>
+                            <p>Gentle yet effective detoxification protocols using organic superfoods, herbal supplements, and guided fasting to reset your system. Our 21-day program helps eliminate toxins naturally.</p>
+                            <a href="contact.html" class="btn">Learn More</a>
+                        </div>
                     </div>
                     
-                    <div class="service-card" style="background: var(--light-color); flex: 1;">
+                    <!-- Lifestyle Coaching -->
+                    <div class="service-card">
                         <img class="service-thumbnail" src="https://img.freepik.com/premium-photo/women-using-tablet-fitness-club_236854-19351.jpg?w=740" alt="Lifestyle Coaching">
-                        <h3 style="color: var(--dark-color);">Lifestyle Coaching</h3>
-                        <p style="color: var(--text-light);">A holistic approach combining nutrition, movement, stress management, and sleep optimization for long-term health.</p>
-                        <a href="contact.html" class="btn" style="margin-top: 20px;">Start Coaching</a>
+                        <div class="service-card-content">
+                            <h3>Lifestyle Coaching</h3>
+                            <p>A holistic approach combining nutrition, movement, stress management, and sleep optimization for long-term health. Transform your daily habits with our 360° wellness strategy.</p>
+                            <a href="contact.html" class="btn">Start Coaching</a>
+                        </div>
                     </div>
                     
-                    <div class="service-card" style="background: var(--light-color); flex: 1;">
+                    <!-- Plant-Based Transition -->
+                    <div class="service-card">
                         <img class="service-thumbnail" src="https://img.freepik.com/free-photo/sustainable-development-goals-still-life_23-2150196668.jpg?w=740" alt="Plant-Based Transition">
-                        <h3 style="color: var(--dark-color);">Plant-Based Transition</h3>
-                        <p style="color: var(--text-light);">Expert guidance for transitioning to a plant-focused diet, ensuring you get all necessary nutrients for optimal health.</p>
-                        <a href="contact.html" class="btn" style="margin-top: 20px;">Go Plant-Based</a>
+                        <div class="service-card-content">
+                            <h3>Plant-Based Transition</h3>
+                            <p>Expert guidance for transitioning to a plant-focused diet, ensuring you get all necessary nutrients for optimal health. Includes meal plans, recipes, and nutritional guidance.</p>
+                            <a href="contact.html" class="btn">Go Plant-Based</a>
+                        </div>
                     </div>
                     
-                    <div class="service-card" style="background: var(--light-color); flex: 1;">
+                    <!-- Immunity Booster Plan -->
+                    <div class="service-card">
                         <img class="service-thumbnail" src="https://img.freepik.com/premium-photo/image-woman-with-glowing-shield-symbolizing-strong-immune-system-surrounded-by-viruses_416749-844.jpg?w=740" alt="Immunity Booster Plan">
-                        <h3 style="color: var(--dark-color);">Immunity Booster Plan</h3>
-                        <p style="color: var(--text-light);">Strengthen your body's natural defenses with a targeted plan including immune-supporting foods, herbs, and lifestyle changes.</p>
-                        <a href="contact.html" class="btn" style="margin-top: 20px;">Boost Immunity</a>
+                        <div class="service-card-content">
+                            <h3>Immunity Booster Plan</h3>
+                            <p>Strengthen your body's natural defenses with a targeted plan including immune-supporting foods, herbs, and lifestyle changes. Our 4-week program prepares your immune system year-round.</p>
+                            <a href="contact.html" class="btn">Boost Immunity</a>
+                        </div>
                     </div>
 
-                    <div class="service-card" style="background: var(--light-color); flex: 1;">
+                    <!-- Women's Hormonal Balance -->
+                    <div class="service-card">
                         <img class="service-thumbnail" src="https://img.freepik.com/free-photo/low-angle-woman-holding-her-leg-up_23-2149433592.jpg?w=740" alt="Hormonal Balance Plan">
-                        <h3 style="color: var(--dark-color);">Women's Hormonal Balance</h3>
-                        <p style="color: var(--text-light);">A natural approach to balance hormones, manage PMS, and support menstrual health through diet and lifestyle adjustments.</p>
-                        <a href="contact.html" class="btn" style="margin-top: 20px;">Find Balance</a>
+                        <div class="service-card-content">
+                            <h3>Women's Hormonal Balance</h3>
+                            <p>A natural approach to balance hormones, manage PMS, and support menstrual health through diet and lifestyle adjustments. Rediscover your natural rhythm with our holistic program.</p>
+                            <a href="contact.html" class="btn">Find Balance</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- How It Works Section -->
-        <section id="how-it-works" class="about" style="background: var(--light-color);">
+        <!-- How It Works Section - Enhanced -->
+        <section id="how-it-works" class="about">
             <div class="container">
-                 <div class="about-content">
+                <div class="about-content">
                     <h2>Your Journey to Wellness in 3 Steps</h2>
-                    <div class="stats" style="grid-template-columns: 1fr; text-align: left;">
-                        <div class="stat-item" style="text-align: left; background: white;">
-                            <h3><i class="fas fa-comments" style="color: var(--primary-color);"></i> Step 1: Initial Consultation</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h3><i class="fas fa-comments"></i> Step 1: Initial Consultation</h3>
                             <p>We start with a free, in-depth consultation to understand your health history, lifestyle, and goals. This allows us to create a truly personalized plan for you.</p>
                         </div>
-                        <div class="stat-item" style="text-align: left; background: white;">
-                           <h3><i class="fas fa-clipboard-list" style="color: var(--primary-color);"></i> Step 2: Personalized Plan</h3>
+                        <div class="stat-item">
+                           <h3><i class="fas fa-clipboard-list"></i> Step 2: Personalized Plan</h3>
                             <p>Based on our consultation, you'll receive a comprehensive, easy-to-follow plan that includes nutrition guides, lifestyle recommendations, and any suggested products.</p>
                         </div>
-                        <div class="stat-item" style="text-align: left; background: white;">
-                            <h3><i class="fas fa-sync-alt" style="color: var(--primary-color);"></i> Step 3: Ongoing Support</h3>
+                        <div class="stat-item">
+                            <h3><i class="fas fa-sync-alt"></i> Step 3: Ongoing Support</h3>
                             <p>Wellness is a journey, not a destination. We provide regular check-ins, plan adjustments, and continuous support to ensure you stay on track and achieve lasting results.</p>
                         </div>
                     </div>
@@ -125,9 +704,29 @@
                 </div>
             </div>
         </section>
+
+        
+
+        <!-- Parallax Section - New -->
+        <section class="parallax-section" style="background-image: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+            <div class="parallax-content">
+                <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Nature's Wisdom for Modern Wellness</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 30px;">We bridge ancient healing traditions with modern science to create sustainable health solutions for today's world.</p>
+                <a href="practices.html" class="btn">Explore Our Practices</a>
+            </div>
+        </section>
+
+        <!-- CTA Section - New -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Health?</h2>
+                <p>Take the first step toward vibrant health today. Our team of certified practitioners is ready to guide you on your wellness journey.</p>
+                <a href="contact.html" class="cta-btn">Get Started Now</a>
+            </div>
+        </section>
     </main>
     
-    <!-- chatbot -->
+    <!-- chatbot - Keep original -->
     <div class="chatbot-container">
         <div class="chat-toggle" onclick="toggleChatbot()">🌾</div>
         <div class="chat-box" id="chatBox">
@@ -145,7 +744,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer - Keep original -->
     <footer class="footer" id="footer">
         <div class="container">
             <div class="footer-content">
@@ -185,7 +784,6 @@
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="20" height="20" aria-label="X" style="vertical-align:middle;"><path d="M96.29 20H112L76.92 58.09L118.36 112H83.13L56.92 78.18L27.6 112H12.01L49.09 71.09L8.36 20H44.13L67.13 50.18L96.29 20ZM89.13 102H99.13L38.36 30H28.36L89.13 102Z" fill="currentColor"/></svg></a>
-
                         <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
@@ -208,6 +806,83 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Floating elements animation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate service cards on scroll
+            const serviceCards = document.querySelectorAll('.service-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            serviceCards.forEach((card, index) => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+            
+            // Pulse animation for CTA button
+            const ctaBtn = document.querySelector('.cta-btn');
+            
+            setInterval(() => {
+                ctaBtn.style.animation = 'pulse 1.5s ease';
+                setTimeout(() => {
+                    ctaBtn.style.animation = '';
+                }, 1500);
+            }, 5000);
+        });
+        
+        // Keep original chatbot functions
+        function toggleChatbot() {
+            const chatBox = document.getElementById('chatBox');
+            chatBox.style.display = chatBox.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function handleQuestion(type) {
+            const chatBody = document.getElementById('chatBody');
+            let response = '';
+            
+            switch(type) {
+                case 'nutrition':
+                    response = 'For optimal nutrition, focus on whole, organic foods. Include plenty of leafy greens, colorful vegetables, healthy fats like avocados, and clean proteins. Drink at least 8 glasses of water daily.';
+                    break;
+                case 'detox':
+                    response = 'Our detox program includes a 21-day plan with organic juices, herbal teas, and specific foods to support your liver and digestion. Would you like more details?';
+                    break;
+                case 'exercise':
+                    response = 'A balanced routine includes 30 minutes of cardio (walking, swimming), strength training 2-3x/week, and daily stretching or yoga. Start slow and listen to your body.';
+                    break;
+            }
+            
+            chatBody.innerHTML += `<p class="bot-response"><strong>WellnessBot:</strong> ${response}</p>`;
+        }
+        
+        function sendCustomMessage() {
+            const userInput = document.getElementById('userInput');
+            const chatBody = document.getElementById('chatBody');
+            
+            if (userInput.value.trim() !== '') {
+                chatBody.innerHTML += `<p class="user-message"><strong>You:</strong> ${userInput.value}</p>`;
+                // Simple bot response
+                setTimeout(() => {
+                    chatBody.innerHTML += `<p class="bot-response"><strong>WellnessBot:</strong> Thank you for your question. Our team will get back to you shortly with a detailed response.</p>`;
+                }, 1000);
+                userInput.value = '';
+            }
+        }
+        
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                sendCustomMessage();
+            }
+        }
+    </script>
 </body>
 </html>
