@@ -436,24 +436,32 @@
 
             <div class="divider">
                 <span>Or sign up with</span>
-            </div>
+              </div>
+              
+              <div class="social-signup">
+                <div id="g_id_onload"
+                     data-client_id="http://388092658593-u84gd2dnfc4bcht04hng1bh84k47ck6j.apps.googleusercontent.com"
+                     data-context="signup"
+                     data-callback="handleGoogleSignIn"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="signup_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
+              </div>
 
-            <div class="social-signup">
-                <a href="#" class="social-btn">
-                    <i class="fab fa-google"></i>
-                    Google
-                </a>
-                <a href="#" class="social-btn">
-                    <i class="fab fa-facebook-f"></i>
-                    Facebook
-                </a>
-            </div>
-
-            <div class="login-link">
+              <div class="login-link">
                 Already have an account? <a href="login.html">Sign in here</a>
-            </div>
+              </div>
         </div>
     </div>
+    
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 document.getElementById("signupForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -512,6 +520,34 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
     alert("Error occurred: " + err.message);
   }
 });
+
+// Google Sign-In
+function handleGoogleSignIn(response) {
+    const jwt = response.credential;
+    // Send token to your backend for verification and signup
+    fetch("https://healthtemplate-1.onrender.com/api/auth/google", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: jwt })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        localStorage.setItem("loggedInUser", JSON.stringify({
+          name: data.user.name,
+          email: data.user.email,
+          avatar: data.user.avatar || "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"
+        }));
+        window.location.href = "dashboard.html";
+      } else {
+        alert(data.message || "Google signup failed.");
+      }
+    })
+    .catch(err => {
+      alert("Error: " + err.message);
+    });
+  }
+
 </script>
 
 </body>

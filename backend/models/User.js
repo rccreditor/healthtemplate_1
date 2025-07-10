@@ -3,6 +3,11 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+  loginType: {
+    type: String,
+    enum: ["manual", "google"],
+    default: "manual"
+  },
   name: String,
   email: {
     type: String,

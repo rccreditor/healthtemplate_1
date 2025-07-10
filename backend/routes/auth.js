@@ -57,4 +57,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Google Auth
+const googleAuthRoute = require("./routes/googleAuth");
+app.use("/api/google-auth", googleAuthRoute);
+
+
 module.exports = router;
+// ✅ This code handles user authentication, including signup and login.

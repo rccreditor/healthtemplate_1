@@ -26,3 +26,6 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
 
+// Google Auth
+const googleAuthRoute = require("./routes/googleAuth");
+app.use("/api/auth/google", googleAuthRoute);

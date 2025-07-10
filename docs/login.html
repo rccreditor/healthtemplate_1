@@ -368,78 +368,130 @@
                 <button type="submit" class="login-btn">Sign In</button>
             </form>
 
-            <div class="divider">
-                <span>Or continue with</span>
-            </div>
-
-            <div class="social-login">
-                <a href="#" class="social-btn">
-                    <i class="fab fa-google"></i>
-                    Google
-                </a>
-                <a href="#" class="social-btn">
-                    <i class="fab fa-facebook-f"></i>
-                    Facebook
-                </a>
-            </div>
+           <!-- Inside the <body> section -->
+<div class="divider">
+    <span>Or sign up with</span>
+  </div>
+  
+  <div class="social-signup">
+    <div id="g_id_onload"
+         data-client_id="YOUR_GOOGLE_CLIENT_ID"
+         data-context="signup"
+         data-callback="handleGoogleSignIn"
+         data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="signup_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+  </div>
 
             <div class="signup-link">
                 Don't have an account? <a href="signup.html">Sign up here</a>
             </div>
         </div>
     </div>
-<script>
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        // Email/Password login (optional fallback)
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value.trim();
     
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+          try {
+            const res = await fetch("https://healthtemplate-1.onrender.com/api/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password })
+            });
     
-      try {
-        const res = await fetch("https://healthtemplate-1.onrender.com/api/auth/login", {
-        //const res = await fetch("http://localhost:5000/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password })
+            const data = await res.json();
+            if (res.ok) {
+              localStorage.setItem("loggedInUser", JSON.stringify(data.user));
+              window.location.href = data.user.isAdmin ? "admin_dashboard.html" : "dashboard.html";
+            } else {
+              alert(data.message || "Login failed. Please check your credentials.");
+            }
+          } catch (err) {
+            alert("Something went wrong: " + err.message);
+          }
         });
     
-        const data = await res.json();
+        // Toggle password visibility
+        function togglePasswordLogin() {
+          const passwordInput = document.getElementById("password");
+          const icon = document.querySelector(".password-toggle i");
     
-        if (res.ok) {
-          alert("Login successful!");
-          localStorage.setItem("loggedInUser", JSON.stringify(data.user)); // ✅ Save user data
-    
-          // ✅ Redirect based on role
-          if (data.user.isAdmin) {
-            window.location.href = "admin_dashboard.html";
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.classList.replace("fa-eye", "fa-eye-slash");
           } else {
-            window.location.href = "dashboard.html";
+            passwordInput.type = "password";
+            icon.classList.replace("fa-eye-slash", "fa-eye");
           }
-        } else {
-          alert(data.message || "Login failed. Please check your credentials.");
         }
-      } catch (err) {
-        alert("Something went wrong: " + err.message);
-      }
-    });
     
-    function togglePasswordLogin() {
-      const passwordInput = document.getElementById("password");
-      const icon = document.querySelector(".password-toggle i");
+        // Google Sign-In with custom button
+        window.onload = function () {
+          google.accounts.id.initialize({
+            client_id: "http://388092658593-u84gd2dnfc4bcht04hng1bh84k47ck6j.apps.googleusercontent.com",
+            callback: handleGoogleCredential
+          });
     
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
+          document.getElementById("googleCustomBtn").addEventListener("click", () => {
+            google.accounts.id.prompt(); // triggers the One Tap or popup
+          });
+        };
+    
+        async function handleGoogleCredential(response) {
+          try {
+            const res = await fetch("https://healthtemplate-1.onrender.com/api/google-auth", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ credential: response.credential })
+            });
+    
+            const data = await res.json();
+            if (res.ok) {
+              localStorage.setItem("loggedInUser", JSON.stringify(data.user));
+              window.location.href = "dashboard.html";
+            } else {
+              alert(data.msg || "Google login failed.");
+            }
+          } catch (err) {
+            alert("Google auth error: " + err.message);
+          }
+        }
+
+        function handleGoogleSignIn(response) {
+    const jwt = response.credential;
+    fetch("https://healthtemplate-1.onrender.com/api/auth/google", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: jwt })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        localStorage.setItem("loggedInUser", JSON.stringify({
+          name: data.user.name,
+          email: data.user.email,
+          avatar: data.user.avatar || "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"
+        }));
+        window.location.href = "dashboard.html";
       } else {
-        passwordInput.type = "password";
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
+        alert(data.message || "Google signup failed.");
       }
-    }
-</script>
+    })
+    .catch(err => alert("Error: " + err.message));
+  }
+      </script>
     
 
 
