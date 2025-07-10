@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
 });
 
 // Google Auth
-const googleAuthRoute = require("./routes/googleAuth");
+const googleAuthRoute = require("./googleAuth");
 app.use("/api/google-auth", googleAuthRoute);
 
 
