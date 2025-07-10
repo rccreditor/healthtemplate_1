@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const User = require("../models/User"); // ✅ Required
+const User = require("../models/User");
 
-// POST /api/auth/signup
+// Signup route
 router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -25,7 +25,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// POST /api/auth/login
+// Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -40,7 +40,6 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-    // ✅ Include isAdmin in the response
     res.status(200).json({
       message: "Login successful",
       user: {
@@ -57,10 +56,8 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Google Auth
+// ✅ Correct usage
 const googleAuthRoute = require("./googleAuth");
-app.use("/api/google-auth", googleAuthRoute);
-
+router.use("/google-auth", googleAuthRoute); // mount it under /api/auth/google-auth
 
 module.exports = router;
-// ✅ This code handles user authentication, including signup and login.
